@@ -1,5 +1,6 @@
 package com.online.shop.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.online.shop.model.Customer;
 import com.online.shop.service.AuthenticationService;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * Authentication controller - The gateway where we're handling all the
@@ -25,9 +24,9 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequestMapping("/authentication")
-@RequiredArgsConstructor
 public class AuthenticationController {
 
+	@Autowired
 	private AuthenticationService authenticationService;
 
 	@GetMapping("/welcome-page")

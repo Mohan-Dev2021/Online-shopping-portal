@@ -1,12 +1,11 @@
 package com.online.shop.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.online.shop.model.Customer;
 import com.online.shop.repository.UserRepo;
 import com.online.shop.service.AuthenticationService;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * Authentication service implementation - Business layer where we're written
@@ -18,9 +17,9 @@ import lombok.RequiredArgsConstructor;
  * 
  */
 @Service
-@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+	@Autowired
 	private UserRepo userRepository;
 
 	@Override
