@@ -1,5 +1,6 @@
 package com.online.shop.model;
 
+import org.apache.kafka.common.Uuid;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -15,7 +16,7 @@ import lombok.Data;
 public class Authorities {
 
 	@Id
-	private String id;
+	private String id = Uuid.randomUuid().toString();
 
 	@Field(name = "role")
 	private String role;

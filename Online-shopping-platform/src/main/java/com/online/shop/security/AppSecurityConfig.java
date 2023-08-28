@@ -39,7 +39,7 @@ public class AppSecurityConfig {
 	private final AuthenticationFilter authenticationFilter;
 
 	/* Access denied handler - security exception handler */
-	private final AccessDeniedHanlder accessDeniedHanlder;
+	private final SecurityAccessDeniedHanlder accessDeniedHanlder;
 
 	/**
 	 * Security filter chain - we're handling all the authentication & authorization

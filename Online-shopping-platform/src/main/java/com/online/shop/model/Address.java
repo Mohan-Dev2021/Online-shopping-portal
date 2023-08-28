@@ -1,5 +1,7 @@
 package com.online.shop.model;
 
+import java.util.UUID;
+
 import org.springframework.data.annotation.Id;
 
 import lombok.Data;
@@ -16,7 +18,7 @@ import lombok.experimental.Accessors;
 public class Address {
 
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 
 	private String addressLine;
 
