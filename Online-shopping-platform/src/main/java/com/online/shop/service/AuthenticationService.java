@@ -1,12 +1,8 @@
 package com.online.shop.service;
 
-
 import java.util.Set;
 
-
 import com.online.shop.dto.CustomerDto;
-
-import com.online.shop.model.Customer;
 
 /**
  * Authentication - service layer which hs all the methods need to be
@@ -21,11 +17,15 @@ public interface AuthenticationService {
 	 * Sign-up - implementation for user registration
 	 */
 	public CustomerDto signUp(CustomerDto customer);
-	
 
 	/*
 	 * Authority - Updating user's authority
 	 */
-	public Boolean updateUserAuthority(String id,Set<String> authorities);
+	public Boolean updateUserAuthority(String id, Set<String> authorities);
+
+	/*
+	 * Login - user login to authenticate and generate the jwt
+	 */
+	public String signIn(String emailId, String password);
 
 }

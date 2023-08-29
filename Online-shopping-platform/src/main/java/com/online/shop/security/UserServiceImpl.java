@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.online.shop.model.Customer;
 import com.online.shop.repository.UserRepo;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
 /**
  * User service - Service class which is used to authenticate and load the
@@ -24,11 +24,14 @@ import lombok.RequiredArgsConstructor;
  * @author Mohanlal
  */
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserServiceImpl implements UserDetailsService {
 
 	/* Persistence layer for the customer */
 	private final UserRepo userRepository;
+
+	/* Jwt service - manipulating and validating jwt token */
+	private final JwtService jwtService;
 
 	/**
 	 * Method to load the user by user name or email and get the granted authorities
@@ -43,6 +46,11 @@ public class UserServiceImpl implements UserDetailsService {
 			authorities.add(new SimpleGrantedAuthority(cust.getRole()));
 		});
 		return new User(customer.getEmailId(), customer.getPassword(), authorities);
+	}
+
+	/* Generate JWT token for user */
+	public String generateToken(User user) {
+		return jwtService.generateToken(user);
 	}
 
 }

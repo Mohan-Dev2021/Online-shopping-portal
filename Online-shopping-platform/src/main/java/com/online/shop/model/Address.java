@@ -19,8 +19,7 @@ import lombok.experimental.Accessors;
 public class Address {
 
 	@Id
-	@Field(name = "id")
-	private String id = UUID.randomUUID().toString();;
+	private String id = UUID.randomUUID().toString();
 
 	@Field(name = "address_line")
 	private String addressLine;
@@ -32,5 +31,5 @@ public class Address {
 	private String state;
 
 	@Field(name = "pincode")
-	private Integer pincode;
+	private String pincode;
 }

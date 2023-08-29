@@ -41,7 +41,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 	/* Jwt service - component used to manipulate web token */
 	private final JwtService jwtService;
 
-	/* User details - service which implement load by username method */
+	/* User details - service which implement load by user name method */
 	private final UserServiceImpl userService;
 
 	/**

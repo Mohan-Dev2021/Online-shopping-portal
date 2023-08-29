@@ -16,7 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
 /**
  * Security - app security configuration class which is responsible to secure
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AppSecurityConfig {
 
 	/* User details service - fetch basic authentication details of user */
@@ -54,7 +54,8 @@ public class AppSecurityConfig {
 	SecurityFilterChain securityChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity.csrf((csrf) -> csrf.disable())
 				.authorizeHttpRequests(request -> request.requestMatchers("/authentication/v1/sign-up").permitAll()
-						.requestMatchers("/authentication/welcome-page").permitAll().anyRequest().authenticated())
+						.requestMatchers("/authentication/welcome-page").permitAll()
+						.requestMatchers("/authentication/v1/sign-in").permitAll().anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				.exceptionHandling((exception) -> exception.accessDeniedHandler(accessDeniedHanlder))
 				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
