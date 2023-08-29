@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.online.shop.model.Customer;
+import com.online.shop.dto.CustomerDto;
 import com.online.shop.service.AuthenticationService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 
 /**
  * Authentication controller - The gateway where we're handling all the
@@ -29,10 +34,11 @@ import com.online.shop.service.AuthenticationService;
  */
 @RestController
 @RequestMapping("/authentication")
+@Validated
+@RequiredArgsConstructor
 public class AuthenticationController {
-
-	@Autowired
-	private AuthenticationService authenticationService;
+	
+	private final AuthenticationService authenticationService;
 
 	@GetMapping("/welcome-page")
 	public ResponseEntity<String> getWelcomePageOfapplication() {
@@ -40,9 +46,17 @@ public class AuthenticationController {
 				.body("Welcome to Online shopping platform......Have a great shopping!!");
 	}
 
+	/**
+	 * Api for user registration
+	 * 	
+	 * @param customerDetails
+	 * @return customerDto
+	 * @category security module
+	 * @author Sivaranjani K
+	 */
 	@PostMapping("/v1/sign-up")
-	public ResponseEntity<String> signUp(@RequestBody Customer customer) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signUp(customer));
+	public ResponseEntity<CustomerDto> signUp(@RequestBody @Valid CustomerDto customerDetails) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signUp(customerDetails));
 	}
 
 	@Secured("hasRole('ROLE_ADMIN')")
@@ -53,3 +67,6 @@ public class AuthenticationController {
 	}
 
 }
+
+
+

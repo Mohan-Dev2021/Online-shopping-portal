@@ -2,14 +2,17 @@ package com.online.shop.serviceImpl;
 
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.online.shop.dto.CustomerDto;
 import com.online.shop.model.Authorities;
 import com.online.shop.model.Customer;
 import com.online.shop.repository.UserRepo;
 import com.online.shop.service.AuthenticationService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Authentication service implementation - Business layer where we're written
@@ -21,14 +24,19 @@ import com.online.shop.service.AuthenticationService;
  * 
  */
 @Service
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-	@Autowired
-	private UserRepo userRepository;
+	private final UserRepo userRepository;
+
+	private final ModelMapper modelMap;
 
 	@Override
-	public String signUp(Customer customer) {
-		return userRepository.save(customer).getId();
+	public CustomerDto signUp(CustomerDto customer) {
+		Customer saveDetail = modelMap.map(customer, Customer.class);
+		Customer saveDetailValues = userRepository.save(saveDetail);
+		CustomerDto customerDto = modelMap.map(saveDetailValues, CustomerDto.class);
+		return customerDto;
 	}
 
 	@Override

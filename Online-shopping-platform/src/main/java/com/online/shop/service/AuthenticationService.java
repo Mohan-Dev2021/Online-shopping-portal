@@ -1,6 +1,10 @@
 package com.online.shop.service;
 
+
 import java.util.Set;
+
+
+import com.online.shop.dto.CustomerDto;
 
 import com.online.shop.model.Customer;
 
@@ -16,7 +20,8 @@ public interface AuthenticationService {
 	/*
 	 * Sign-up - implementation for user registration
 	 */
-	public String signUp(Customer customer);
+	public CustomerDto signUp(CustomerDto customer);
+	
 
 	/*
 	 * Authority - Updating user's authority

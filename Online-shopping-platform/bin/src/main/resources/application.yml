@@ -1,0 +1,24 @@
+#port
+server:
+  port: 8085
+  #base context path
+  servlet:
+    context-path: /online-shopping-platform
+    
+
+#application name  
+spring:
+  application:
+    name: Online-shopping-portal
+    
+
+#mongo-properties
+  data:
+    mongodb:
+      uri: mongodb+srv://mohan:mohan_sk@e-com.nmyhphn.mongodb.net/?retryWrites=true&w=majority
+      database: E-com
+
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    

@@ -52,11 +52,6 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver-sync</artifactId>
 		</dependency>
-		<dependency>
- <groupId>org.modelmapper</groupId>
- <artifactId>modelmapper</artifactId>
- <version>3.1.1</version>
-</dependency>
 		<!--to handle jwt token -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
