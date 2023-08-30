@@ -17,6 +17,8 @@ import com.online.shop.model.Customer;
 @EnableMongoRepositories
 public interface UserRepo extends MongoRepository<Customer, String> {
 
-	Optional<Customer> findByEmailId(String username);
+	public Optional<Customer> findByEmailId(String emailId);
+	
+	public Optional <Customer> findById(String id);
 
 }

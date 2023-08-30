@@ -54,7 +54,7 @@ public class AppSecurityConfig {
 	SecurityFilterChain securityChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity.csrf((csrf) -> csrf.disable())
 				.authorizeHttpRequests(request -> request.requestMatchers("/authentication/v1/sign-up").permitAll()
-						.requestMatchers("/authentication/welcome-page").permitAll().anyRequest().authenticated())
+				.requestMatchers("/authentication/welcome-page").permitAll().requestMatchers("/user/**").hasAuthority("ADMIN").anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				.exceptionHandling((exception) -> exception.accessDeniedHandler(accessDeniedHanlder))
 				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();

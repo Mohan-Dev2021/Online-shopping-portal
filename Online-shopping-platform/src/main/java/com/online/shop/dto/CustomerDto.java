@@ -2,6 +2,9 @@ package com.online.shop.dto;
 
 import java.util.List;
 
+import com.online.shop.model.Address;
+import com.online.shop.model.Customer;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +22,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CustomerDto {
   
-	private int id;
+	private String id;
 	@NotBlank(message = "FirstName should  not be blank")
 	@Size(min = 2, max = 10, message = "First Name should have atleast 2-10 characters")
 	@Pattern(regexp = "[a-zA-Z]+", message = "First name must not contain special characters & numerics")
