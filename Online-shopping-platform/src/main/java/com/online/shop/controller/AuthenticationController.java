@@ -34,8 +34,8 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequestMapping("/authentication")
-@Validated
 @RequiredArgsConstructor
+@Validated
 public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
