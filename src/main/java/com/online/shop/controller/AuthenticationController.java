@@ -2,7 +2,6 @@ package com.online.shop.controller;
 
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -19,10 +18,8 @@ import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.ManagerDto;
 import com.online.shop.service.AuthenticationService;
 
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 
 /**
  * Authentication controller - The gateway where we're handling all the
@@ -39,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 @Validated
 @RequiredArgsConstructor
 public class AuthenticationController {
-	
+
 	private final AuthenticationService authenticationService;
 
 	@GetMapping("/welcome-page")
@@ -50,7 +47,7 @@ public class AuthenticationController {
 
 	/**
 	 * Api for user registration
-	 * 	
+	 * 
 	 * @param customerDetails
 	 * @return customerDto
 	 * @category security module
@@ -63,7 +60,7 @@ public class AuthenticationController {
 
 	/**
 	 * Api for management registration
-	 * 	
+	 * 
 	 * @param managerDetails
 	 * @return managerDto
 	 * @category security module
@@ -73,7 +70,7 @@ public class AuthenticationController {
 	public ResponseEntity<ManagerDto> managementSignUp(@RequestBody @Valid ManagerDto manager) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.managementSignUp(manager));
 	}
-	
+
 	@Secured("hasRole('ROLE_ADMIN')")
 	@PutMapping("/v1/authority")
 	public ResponseEntity<Boolean> updateUserAuthority(@RequestHeader String id, @RequestBody Set<String> authorities) {
@@ -82,6 +79,3 @@ public class AuthenticationController {
 	}
 
 }
-
-
-

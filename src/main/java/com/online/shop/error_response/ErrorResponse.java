@@ -9,8 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
+public class ErrorResponse extends RuntimeException{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4591174442406123118L;
 	private String errorMsg;
 	private int status;
 	private LocalDateTime timeStamp;
