@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.online.shop.dto.CustomerDto;
+import com.online.shop.dto.ManagerDto;
 import com.online.shop.service.AuthenticationService;
+
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +61,19 @@ public class AuthenticationController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signUp(customerDetails));
 	}
 
+	/**
+	 * Api for management registration
+	 * 	
+	 * @param managerDetails
+	 * @return managerDto
+	 * @category security module
+	 * @author Sneka S
+	 */
+	@PostMapping("/management/v1/sign-up")
+	public ResponseEntity<ManagerDto> managementSignUp(@RequestBody @Valid ManagerDto manager) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.managementSignUp(manager));
+	}
+	
 	@Secured("hasRole('ROLE_ADMIN')")
 	@PutMapping("/v1/authority")
 	public ResponseEntity<Boolean> updateUserAuthority(@RequestHeader String id, @RequestBody Set<String> authorities) {

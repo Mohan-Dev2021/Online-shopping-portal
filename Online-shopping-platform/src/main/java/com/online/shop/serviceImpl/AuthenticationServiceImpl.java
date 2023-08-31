@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.online.shop.dto.CustomerDto;
+import com.online.shop.dto.ManagerDto;
 import com.online.shop.model.Authorities;
 import com.online.shop.model.Customer;
+import com.online.shop.model.Manager;
+import com.online.shop.repository.ManagerRepo;
 import com.online.shop.repository.UserRepo;
 import com.online.shop.service.AuthenticationService;
 
@@ -28,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private final UserRepo userRepository;
-
+	private final ManagerRepo managerRepo;
 	private final ModelMapper modelMap;
 
 	@Override
@@ -37,6 +40,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		Customer saveDetailValues = userRepository.save(saveDetail);
 		CustomerDto customerDto = modelMap.map(saveDetailValues, CustomerDto.class);
 		return customerDto;
+	}
+
+	@Override
+	public ManagerDto managementSignUp(ManagerDto manager) {
+		Manager saveDetail = modelMap.map(manager, Manager.class);
+		Manager saveDetailValues = managerRepo.save(saveDetail);
+		ManagerDto ManagerDto = modelMap.map(saveDetailValues, ManagerDto.class);
+		return ManagerDto;
 	}
 
 	@Override

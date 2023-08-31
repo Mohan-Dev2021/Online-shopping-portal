@@ -36,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
 	/* White listing Urls */
-	private final List<String> whiteListedUrls = List.of("/v1/sign-up", "/authentication/welcome-page");
+	private final List<String> whiteListedUrls = List.of("/v1/sign-up","/v2/sign-up", "/authentication/welcome-page");
 
 	/* Jwt service - component used to manipulate web token */
 	private final JwtService jwtService;

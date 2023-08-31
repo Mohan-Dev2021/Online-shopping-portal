@@ -5,7 +5,7 @@ import java.util.Set;
 
 
 import com.online.shop.dto.CustomerDto;
-
+import com.online.shop.dto.ManagerDto;
 import com.online.shop.model.Customer;
 
 /**
@@ -22,10 +22,13 @@ public interface AuthenticationService {
 	 */
 	public CustomerDto signUp(CustomerDto customer);
 	
+     public ManagerDto managementSignUp(ManagerDto manager);
 
 	/*
 	 * Authority - Updating user's authority
 	 */
 	public Boolean updateUserAuthority(String id,Set<String> authorities);
+
+	
 
 }

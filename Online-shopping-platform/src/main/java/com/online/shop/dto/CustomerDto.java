@@ -1,17 +1,11 @@
 package com.online.shop.dto;
 
-import java.util.List;
-
-import com.online.shop.model.Address;
-import com.online.shop.model.Customer;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -43,6 +37,6 @@ public class CustomerDto {
 	private String contactNo;
 	
 	@Valid
-	private List<AddressDto> addressDto;
+	private AddressDto addressDto;
 	
 }

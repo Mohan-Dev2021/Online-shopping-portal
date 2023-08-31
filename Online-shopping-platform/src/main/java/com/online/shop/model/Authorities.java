@@ -20,4 +20,9 @@ public class Authorities {
 
 	@Field(name = "role")
 	private String role;
+	
+	@Field(name = "role_admin")
+	private String role_admin;
+	
+	
 }

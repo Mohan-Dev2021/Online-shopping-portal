@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.online.shop.dto.CustomerDto;
@@ -24,8 +25,8 @@ public class UserController {
 
 	}
 
-	@GetMapping("/{emailId}")
-	public ResponseEntity<CustomerDto> getUserEmailId(@PathVariable String emailId) {
+	@GetMapping
+	public ResponseEntity<CustomerDto> getUserEmailId(@RequestParam String emailId) {
 		return ResponseEntity.status(HttpStatus.OK).body(getUserDetails.getUserDetailsByEmailId(emailId));
 
 	}
