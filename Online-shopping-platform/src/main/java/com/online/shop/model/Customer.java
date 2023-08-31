@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
@@ -73,10 +72,8 @@ public class Customer implements UserDetails {
 	@CreatedDate
 	private LocalDateTime registeredAt;
 
-	@DBRef
 	private Address address;
 
-	@DBRef
 	private List<Authorities> userAuthorities;
 
 	@Override
@@ -92,7 +89,7 @@ public class Customer implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return emailId;
+		return userName;
 	}
 
 	@Override

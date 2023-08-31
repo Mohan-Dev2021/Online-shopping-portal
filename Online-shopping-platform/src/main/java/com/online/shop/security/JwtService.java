@@ -2,6 +2,7 @@ package com.online.shop.security;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -36,7 +36,11 @@ public class JwtService {
 
 	/* Method used to generate the token based on the user details */
 	public String generateToken(UserDetails userDetails) {
-		return generateToken(Map.of(), userDetails);
+		Map<String, String> claims = new HashMap<>();
+		userDetails.getAuthorities().stream().forEach(authority -> {
+			claims.put("role", authority.getAuthority());
+		});
+		return token(claims, userDetails);
 	}
 
 	/* Method used to validate the user's jwt token */
@@ -52,11 +56,11 @@ public class JwtService {
 	}
 
 	/* Main method used to manipulate the json web token for the user */
-	private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+	private String token(Map<String, String> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)).setIssuer(jwtSigningKey)
+				.compact();
 	}
 
 	/* Method used to check whether the user's token is expired or not */
