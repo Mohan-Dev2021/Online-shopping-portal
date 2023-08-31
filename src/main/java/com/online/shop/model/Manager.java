@@ -19,19 +19,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
 @Data
 @NoArgsConstructor
 @Document(collection = "app_manager")
 @Accessors(chain = true)
 /**
- * Customer - Main manager table which has every information of the manager whose are
- * all registered and using our application for shopping experience
+ * Customer - Main manager table which has every information of the manager
+ * whose are all registered and using our application for shopping experience
  * 
  * @category Entity module
  * @author Sneka S
  */
 public class Manager implements UserDetails {
-	
+
 	/**
 	 * 
 	 */
@@ -73,7 +74,7 @@ public class Manager implements UserDetails {
 	private LocalDateTime registeredAt;
 	@DBRef
 	private List<Authorities> managerAuthorities;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return managerAuthorities.stream().map(manager -> new SimpleGrantedAuthority(manager.getRole()))

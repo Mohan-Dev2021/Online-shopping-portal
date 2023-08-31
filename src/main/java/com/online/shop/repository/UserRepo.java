@@ -18,7 +18,7 @@ import com.online.shop.model.Customer;
 public interface UserRepo extends MongoRepository<Customer, String> {
 
 	public Optional<Customer> findByEmailId(String emailId);
-	
-	public Optional <Customer> findById(String id);
+
+	public Optional<Customer> findById(String id);
 
 }

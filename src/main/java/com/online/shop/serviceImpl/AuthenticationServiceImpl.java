@@ -1,13 +1,17 @@
 package com.online.shop.serviceImpl;
 
+import java.util.List;
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.online.shop.dto.AddressDto;
 import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.ManagerDto;
+import com.online.shop.model.Address;
 import com.online.shop.model.Authorities;
 import com.online.shop.model.Customer;
 import com.online.shop.model.Manager;
@@ -33,18 +37,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final UserRepo userRepository;
 	private final ManagerRepo managerRepo;
 	private final ModelMapper modelMap;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public CustomerDto signUp(CustomerDto customer) {
 		Customer saveDetail = modelMap.map(customer, Customer.class);
+		Address address = modelMap.map(customer.getAddress(), Address.class);
+		saveDetail.setAddress(address);
+		saveDetail.setPassword(passwordEncoder.encode(customer.getPassword()));
+		saveDetail.setUserAuthorities(List.of(new Authorities().setRole("ROLE_USER")));
 		Customer saveDetailValues = userRepository.save(saveDetail);
 		CustomerDto customerDto = modelMap.map(saveDetailValues, CustomerDto.class);
+		AddressDto addressDto = modelMap.map(customerDto.getAddress(), AddressDto.class);
+		customerDto.setAddress(addressDto);
 		return customerDto;
 	}
 
 	@Override
 	public ManagerDto managementSignUp(ManagerDto manager) {
 		Manager saveDetail = modelMap.map(manager, Manager.class);
+		saveDetail.setPassword(passwordEncoder.encode(manager.getPassword()));
+		saveDetail.setManagerAuthorities(List.of(new Authorities().setRole("ROLE_ADMIN")));
 		Manager saveDetailValues = managerRepo.save(saveDetail);
 		ManagerDto ManagerDto = modelMap.map(saveDetailValues, ManagerDto.class);
 		return ManagerDto;

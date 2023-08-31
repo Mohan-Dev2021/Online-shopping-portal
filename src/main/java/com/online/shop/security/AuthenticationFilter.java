@@ -1,7 +1,6 @@
 package com.online.shop.security;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;
@@ -35,9 +34,6 @@ import lombok.RequiredArgsConstructor;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-	/* White listing Urls */
-	private final List<String> whiteListedUrls = List.of("/v1/sign-up", "/authentication/welcome-page");
-
 	/* Jwt service - component used to manipulate web token */
 	private final JwtService jwtService;
 
@@ -58,8 +54,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 		final String jwt;
 		final String userEmail;
 		/* Redirecting the request without authorizing the jwt token - permit All */
-		if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")
-				|| this.isUrlWhiteListed(request.getServletPath())) {
+		if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -77,15 +72,5 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 			}
 		}
 		filterChain.doFilter(request, response);
-	}
-
-	/**
-	 * White listed Url collectively those are non authorizable
-	 * 
-	 * @param url
-	 * @return
-	 */
-	private boolean isUrlWhiteListed(String url) {
-		return (whiteListedUrls.stream().anyMatch(url::contains));
 	}
 }
