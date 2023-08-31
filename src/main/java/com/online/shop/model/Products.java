@@ -36,4 +36,16 @@ public class Products {
 
 	@Field(name = "product_image")
 	private byte[] image;
+
+	public Products(String id, String productName, String productId, Double quantity, BigDecimal price, byte[] image) {
+		super();
+		this.id = id;
+		this.productName = productName;
+		this.productId = productId;
+		this.quantity = quantity;
+		this.price = price;
+		this.image = image;
+	}
+	
+	
 }

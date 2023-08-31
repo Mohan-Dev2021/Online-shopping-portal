@@ -1,6 +1,6 @@
 package com.online.shop.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +33,9 @@ public class ProductController {
 	@GetMapping("/product/{productId}")
 	public ResponseEntity<ProductDto> getProductByProductId(@PathVariable String productId) {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByProductId(productId));
+	}
+		@GetMapping
+	public ResponseEntity<List<ProductDto>> getAllProducts(){
+		return ResponseEntity.status(HttpStatus.OK).body(productService.getAllproduct());
 	}
 }

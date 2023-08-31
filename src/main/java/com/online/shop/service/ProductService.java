@@ -1,8 +1,7 @@
 package com.online.shop.service;
 
-import java.util.Optional;
+import java.util.List;
 
-import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.ProductDto;
 
 public interface ProductService {
@@ -11,5 +10,7 @@ public interface ProductService {
 	
 	public ProductDto getProductById(String id);
 
+	public List <ProductDto> getAllproduct();
+      
 
 }

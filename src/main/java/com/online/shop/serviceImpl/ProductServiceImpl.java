@@ -2,6 +2,7 @@ package com.online.shop.serviceImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,16 @@ public class ProductServiceImpl implements ProductService {
 		return product1;
 	}
 
+	@Override
+	public List<ProductDto> getAllproduct() {
 	
+		List<Products> AllProducts = productRepo.findAll();
+		return AllProducts.stream().map(product->modelMapper.map(product, ProductDto.class))
+		.collect (Collectors.toList ());
+	
+		
+	}
+
 
 
 
