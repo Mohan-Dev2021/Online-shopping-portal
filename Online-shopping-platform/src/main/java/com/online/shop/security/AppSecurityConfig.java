@@ -1,4 +1,4 @@
-package com.online.shop.security;
+ package com.online.shop.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,8 +55,9 @@ public class AppSecurityConfig {
 		return httpSecurity.csrf((csrf) -> csrf.disable())
 				.authorizeHttpRequests(request -> request.requestMatchers("/authentication/v1/sign-up").permitAll()
 						.requestMatchers("/authentication/welcome-page").permitAll()
-						.requestMatchers("/authentication/v1/sign-in").permitAll().anyRequest().authenticated())
-				.authenticationProvider(authenticationProvider())
+						.requestMatchers("/authentication/v1/sign-in").permitAll()
+						.requestMatchers("/products/***").permitAll().anyRequest().authenticated())
+				       				.authenticationProvider(authenticationProvider())
 				.exceptionHandling((exception) -> exception.accessDeniedHandler(accessDeniedHanlder))
 				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}

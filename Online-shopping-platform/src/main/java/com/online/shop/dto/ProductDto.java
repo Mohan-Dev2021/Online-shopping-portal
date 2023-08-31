@@ -21,23 +21,25 @@ public class ProductDto {
 	 private String id;
 	 
 	 @NotBlank(message = "productName should  not be blank")
-	 @Size(min = 1, max = 50, message = "address should have atleast 1-20 characters")
+	 @Size(min = 1, max = 50, message = "product Name should have atleast 1-20 characters")
 	 @Field(name="productName")
 	 private String productName;
 	 
-	 @NotBlank(message = "productId should  not be blank")
+	 /* Not required
+	 @NotBlank(message = "productId should  not be blank")*/
 	 @Field(name="productId")
      private String productId;
 	 
-	 @NotBlank(message = "quantity should  not be blank")
-	 @Pattern(regexp = "(^$|[0-9]{10})", message = "quantity  should be numeric")
+	 @NotNull(message="products should not be null")
+//	 @Pattern(regexp = "(^$|[0-9]{10})", message = "quantity  should be numeric")
 	 private Double quantity;
 	 
-	 @NotBlank(message = "price should  not be blank")
-	 @Pattern(regexp = "(^$|[0-9]{7})", message = "price  should be numeric")
+	 
+	 @NotNull(message="price should not be null")
+//	 @Pattern(regexp = "(^$|[0-9]{7})", message = "price  should be numeric")
 	 private BigDecimal price;
 	 
-	 @NotNull(message="image should not be blank")
+	// @NotNull(message="image should not be blank")
 	 private byte[] image;
 
 

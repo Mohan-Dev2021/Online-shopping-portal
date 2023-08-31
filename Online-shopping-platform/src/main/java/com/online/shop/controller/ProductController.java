@@ -2,10 +2,15 @@ package com.online.shop.controller;
 
 import java.util.Optional;
 
+import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,16 +18,20 @@ import com.online.shop.dto.ProductDto;
 import com.online.shop.repository.ProductRepo;
 import com.online.shop.service.ProductService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
-	private final ProductService productService;
+	/**
+	 * update comments for functionality
+	 */
 
-	private final ProductRepo productRepo;
+	private final ProductService productService;
 
 	@GetMapping("/product/{id}")
 	public ResponseEntity<ProductDto> getProductById(@PathVariable String id) {
@@ -34,4 +43,23 @@ public class ProductController {
 	public ResponseEntity<ProductDto> getProductByProductId(@PathVariable String productId) {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByProductId(productId));
 	}
+
+	// Generate productId for every persistence - (Format - ECOM+MONTH+UUID's last 4
+	// digits[size - 13])
+	@PostMapping
+	public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductDto saveProduct) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(saveProduct));
+	}
+
+	// create PUT api
+
+	@Description(value = "Update products details  depends on productId from existing database")
+	@PutMapping("/product")
+	public ResponseEntity<ProductDto> updateProducts(@RequestBody ProductDto productDto) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.updateProducts(productDto));
+
+	}
+
+	// create DELETE api
+
 }
