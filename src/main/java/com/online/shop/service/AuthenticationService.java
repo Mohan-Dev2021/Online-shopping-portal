@@ -3,6 +3,7 @@ package com.online.shop.service;
 import java.util.Set;
 
 import com.online.shop.dto.CustomerDto;
+import com.online.shop.dto.LoginRequestDto;
 import com.online.shop.dto.ManagerDto;
 
 /**
@@ -25,5 +26,7 @@ public interface AuthenticationService {
 	 * Authority - Updating user's authority
 	 */
 	public Boolean updateUserAuthority(String id, Set<String> authorities);
+
+	public String signIn(LoginRequestDto requestDto);
 
 }

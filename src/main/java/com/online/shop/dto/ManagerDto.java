@@ -1,6 +1,5 @@
 package com.online.shop.dto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -43,8 +42,4 @@ public class ManagerDto {
 	@NotBlank(message = "contactNo  shouldn't be empty!")
 	@Pattern(regexp = "(^$|[0-9]{10})", message = "contactNo no should be 0-9")
 	private String contactNo;
-
-	@Valid
-	private AddressDto addressDto;
-
 }

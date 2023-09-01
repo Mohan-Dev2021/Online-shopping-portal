@@ -2,6 +2,7 @@ package com.online.shop.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.online.shop.model.Customer;
+import com.online.shop.model.Manager;
+import com.online.shop.repository.ManagerRepo;
 import com.online.shop.repository.UserRepo;
 
 import lombok.AllArgsConstructor;
@@ -33,24 +36,36 @@ public class UserServiceImpl implements UserDetailsService {
 	/* Jwt service - manipulating and validating jwt token */
 	private final JwtService jwtService;
 
+	private final ManagerRepo managerRepo;
+
 	/**
 	 * Method to load the user by user name or email and get the granted authorities
 	 * or roles
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Customer customer = userRepository.findByEmailId(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		customer.getUserAuthorities().stream().forEach(cust -> {
-			authorities.add(new SimpleGrantedAuthority(cust.getRole()));
-		});
-		return new User(customer.getEmailId(), customer.getPassword(), authorities);
+		Optional<Customer> customer = userRepository.findByEmailId(username);
+		if (customer.isEmpty()) {
+			Manager admin = managerRepo.findByEmailId(username)
+					.orElseThrow(() -> new UsernameNotFoundException("User doesn't exists!..."));
+			List<GrantedAuthority> authorities = new ArrayList<>();
+			admin.getManagerAuthorities().stream().forEach(adm -> {
+				authorities.add(new SimpleGrantedAuthority(adm.getRole()));
+			});
+			return new User(admin.getEmailId(), admin.getPassword(), authorities);
+		} else {
+			List<GrantedAuthority> authorities = new ArrayList<>();
+			customer.get().getUserAuthorities().stream().forEach(cust -> {
+				authorities.add(new SimpleGrantedAuthority(cust.getRole()));
+			});
+			return new User(customer.get().getEmailId(), customer.get().getPassword(), authorities);
+		}
 	}
 
 	/* Generate JWT token for user */
 	public String generateToken(User user) {
-		return jwtService.generateToken(user);
+		UserDetails userdetails = this.loadUserByUsername(user.getUsername());
+		return jwtService.generateToken(userdetails);
 	}
 
 }

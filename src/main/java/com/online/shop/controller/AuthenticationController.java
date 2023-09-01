@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.online.shop.dto.AppResponse;
 import com.online.shop.dto.CustomerDto;
+import com.online.shop.dto.LoginRequestDto;
 import com.online.shop.dto.ManagerDto;
 import com.online.shop.service.AuthenticationService;
 
@@ -70,6 +72,12 @@ public class AuthenticationController {
 	@PostMapping("/management/v1/sign-up")
 	public ResponseEntity<ManagerDto> managementSignUp(@RequestBody @Valid ManagerDto manager) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.managementSignUp(manager));
+	}
+
+	@PostMapping("/v1/sign-in")
+	public ResponseEntity<AppResponse<String>> signIn(@RequestBody LoginRequestDto requestDto) {
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new AppResponse<>(true, HttpStatus.OK.value(), authenticationService.signIn(requestDto)));
 	}
 
 	@Secured("hasRole('ROLE_ADMIN')")
