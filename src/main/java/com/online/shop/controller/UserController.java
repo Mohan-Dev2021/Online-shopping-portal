@@ -15,16 +15,32 @@ import com.online.shop.service.UserService;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@Autowired
 	UserService getUserDetails;
 
+	/**
+	 * Api for GetUserDetailsById
+	 * 
+	 * @param customerDetails
+	 * @return customerDto
+	 * @category get customerDetaisById module
+	 * @author Sneka S
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomerDto> getUserDetailsById(@PathVariable String id) {
 		return ResponseEntity.status(HttpStatus.OK).body(getUserDetails.getUserDetailsById(id));
 
 	}
 
+	/**
+	 * Api for GetUserDetailsByEmailId
+	 * 
+	 * @param customerDetails
+	 * @return customerDto
+	 * @category get customerDetaisByEmailId module
+	 * @author Sneka S
+	 */
 	@GetMapping
 	public ResponseEntity<CustomerDto> getUserEmailId(@RequestParam String emailId) {
 		return ResponseEntity.status(HttpStatus.OK).body(getUserDetails.getUserDetailsByEmailId(emailId));

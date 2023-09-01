@@ -1,6 +1,7 @@
 package com.online.shop.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -34,6 +35,5 @@ public class Products {
 	@Field(name = "price")
 	private BigDecimal price;
 
-	@Field(name = "product_image")
-	private byte[] image;
+	private ProductImage productImage;
 }

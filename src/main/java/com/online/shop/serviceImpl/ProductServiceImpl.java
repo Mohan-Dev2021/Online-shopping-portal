@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.online.shop.dto.ProductDto;
+import com.online.shop.dto.ProductImageDto;
 import com.online.shop.model.Products;
 import com.online.shop.repository.ProductRepo;
 import com.online.shop.service.ProductService;
@@ -39,8 +40,14 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDto saveProduct(ProductDto saveProduct) {
 		Products productDetails = modelMapper.map(saveProduct, Products.class);
 		productDetails.setProductId(this.getProductId());
+		
 		Products saveProducts = productRepo.save(productDetails);
 		ProductDto productDto = modelMapper.map(saveProducts, ProductDto.class);
+		
+//		ProductImageDto ProductImageDto = modelMapper.map(productDetails.getProductImage(), ProductImageDto.class);
+//		ProductImageDto.setImageId(this.getProductId());
+//		
+//		productDto.setProductImageDto(ProductImageDto);
 		return productDto;
 	}
 
@@ -57,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 		Products product1 = productRepo.save(productEntity);
 		ProductDto productDto = modelMapper.map(product1, ProductDto.class);
 		return productDto;
-
 	}
 
+	
 }
