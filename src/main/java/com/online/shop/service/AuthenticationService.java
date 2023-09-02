@@ -19,7 +19,9 @@ public interface AuthenticationService {
 	 * Sign-up - implementation for user registration
 	 */
 	public CustomerDto signUp(CustomerDto customer);
-
+	/*
+	 * managementSign-up - implementation for user registration
+	 */
 	public ManagerDto managementSignUp(ManagerDto manager);
 
 	/*

@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse extends RuntimeException{
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
+public class ErrorResponse {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4591174442406123118L;
 	private String errorMsg;
 	private int status;
 	private LocalDateTime timeStamp;

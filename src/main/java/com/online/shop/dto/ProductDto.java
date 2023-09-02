@@ -35,7 +35,6 @@ public class ProductDto {
 //	 @Pattern(regexp = "(^$|[0-9]{7})", message = "price  should be numeric")
 	private BigDecimal price;
 
-	// @NotNull(message="image should not be blank")
-	private byte[] image;
+	 private ProductImageDto productImageDto;
 
 }

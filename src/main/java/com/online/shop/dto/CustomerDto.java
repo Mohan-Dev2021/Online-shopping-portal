@@ -11,6 +11,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * 
+ * @author Sneka S
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

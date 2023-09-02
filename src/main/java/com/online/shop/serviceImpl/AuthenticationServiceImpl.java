@@ -44,7 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final ModelMapper modelMap;
 	private final PasswordEncoder passwordEncoder;
 	private final UserServiceImpl userService;
-
+	
+//user registration serviceImpl
 	@Override
 	public CustomerDto signUp(CustomerDto customer) {
 		Customer saveDetail = modelMap.map(customer, Customer.class);
@@ -58,7 +59,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		customerDto.setAddress(addressDto);
 		return customerDto;
 	}
-
+	
+//management registration serviceImpl
 	@Override
 	public ManagerDto managementSignUp(ManagerDto manager) {
 		Manager saveDetail = modelMap.map(manager, Manager.class);

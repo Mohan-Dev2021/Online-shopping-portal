@@ -1,12 +1,16 @@
 package com.online.shop.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +19,7 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@JsonInclude(content = Include.NON_NULL)
 @Document(collection = "app_products")
 public class Products {
 
@@ -34,6 +39,5 @@ public class Products {
 	@Field(name = "price")
 	private BigDecimal price;
 
-	@Field(name = "product_image")
-	private byte[] image;
+	private ProductImage productImage;
 }
