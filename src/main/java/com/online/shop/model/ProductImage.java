@@ -18,12 +18,18 @@ import lombok.experimental.Accessors;
 public class ProductImage {
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Indexed
 	@Field(name = "image_id")
 	private String imageId;
-	
+
+	@Field(name = "image_name")
+	private String imageName;
+
+	@Field(name = "image_format")
+	private String imageFormat;
+
 	@Field(name = "product_image")
 	private byte[] image;
-	private ProductImage productImage;
+
 }

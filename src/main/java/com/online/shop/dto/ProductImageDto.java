@@ -1,10 +1,9 @@
 package com.online.shop.dto;
 
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 /**
  * 
  * @author Sneka S
@@ -15,8 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImageDto {
 	private String id;
-	
+
 	private String imageId;
-	
-	private byte[] image;
+
+	private String imageName;
+
+	private String imageFormat;
 }

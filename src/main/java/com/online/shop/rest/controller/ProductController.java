@@ -1,11 +1,11 @@
-package com.online.shop.controller;
-
-import java.util.List;
+package com.online.shop.rest.controller;
 
 import org.springframework.context.annotation.Description;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +39,6 @@ public class ProductController {
 
 	}
 
-	// Api working good but productId field is missing
 	@GetMapping
 	public ResponseEntity<ProductDto> getProductByProductId(@RequestParam String productId) {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByProductId(productId));
@@ -55,8 +54,11 @@ public class ProductController {
 	@PutMapping
 	public ResponseEntity<ProductDto> updateProducts(@RequestBody ProductDto productDto) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.updateProducts(productDto));
-
 	}
 
+	@DeleteMapping
+	public ResponseEntity<Boolean> removeProductById(@RequestParam String id) throws NotFoundException {
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(productService.removeProductById(id));
+	}
 
 }
