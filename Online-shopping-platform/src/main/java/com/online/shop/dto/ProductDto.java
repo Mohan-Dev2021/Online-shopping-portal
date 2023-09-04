@@ -25,6 +25,7 @@ public class ProductDto {
 	 @Field(name="productName")
 	 private String productName;
 	 
+
 	 @NotBlank(message = "productId should  not be blank")
 	 @Field(name="productId")
      private String productId;
