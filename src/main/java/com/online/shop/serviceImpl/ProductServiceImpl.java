@@ -1,9 +1,15 @@
 package com.online.shop.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.online.shop.dto.PaginationDtoResponse;
 import com.online.shop.dto.ProductDto;
 import com.online.shop.dto.ProductImageDto;
 import com.online.shop.error_response.EShopException;
@@ -73,6 +79,18 @@ public class ProductServiceImpl implements ProductService {
 			throw new EShopException().setErrorCode(500)
 					.setMessage("Something went wrong while removing the product - " + ex.getLocalizedMessage());
 		}
+	}
+
+	@Override
+	public PaginationDtoResponse<?> getAllProductsByPagination(Integer pageNo, Integer offset) {
+		PageRequest request = PageRequest.of(pageNo, offset);
+		Page<Products> pagableProducts = productRepo.findAll(request);
+		List<ProductDto> toProductDtolist = pagableProducts.getContent().stream()
+				.map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+		PaginationDtoResponse<ProductDto> paginatedRes = new PaginationDtoResponse<ProductDto>()
+				.setContent(toProductDtolist).setNumberOfElements(pagableProducts.getNumberOfElements()).setTotalElements(pagableProducts.getTotalElements())
+				.setPageNo(pageNo).setSort(pagableProducts.getSort()).setOffset(offset).setHasPrevious(pagableProducts.getPageable().hasPrevious());
+		return paginatedRes;
 	}
 
 }

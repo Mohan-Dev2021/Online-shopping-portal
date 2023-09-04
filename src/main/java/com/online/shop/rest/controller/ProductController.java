@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.online.shop.dto.PaginationDtoResponse;
 import com.online.shop.dto.ProductDto;
 import com.online.shop.service.ProductService;
 
@@ -42,6 +43,13 @@ public class ProductController {
 	@GetMapping
 	public ResponseEntity<ProductDto> getProductByProductId(@RequestParam String productId) {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByProductId(productId));
+	}
+
+	@GetMapping("/list")
+	public ResponseEntity<PaginationDtoResponse<?>> getAllProductsByPagination(
+			@RequestParam(required = false, defaultValue = "0") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "10") Integer offset) {
+		return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProductsByPagination(pageNo, offset));
 	}
 
 	@PostMapping

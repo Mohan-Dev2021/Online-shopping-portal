@@ -3,6 +3,7 @@ package com.online.shop.rest.exceptionhandler;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.validation.FieldError;
@@ -33,6 +34,14 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> genericExceptionHandler(EShopException exception) {
 		return ResponseEntity.status(exception.getErrorCode())
 				.body(new ErrorResponse().setStatus(exception.getErrorCode()).setErrorMsg(exception.getMessage())
+						.setTimeStamp(LocalDateTime.now()));
+	}
+	
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus
+	public ResponseEntity<ErrorResponse> exception(Exception e){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(new ErrorResponse().setStatus(400).setErrorMsg(e.getMessage())
 						.setTimeStamp(LocalDateTime.now()));
 	}
 
