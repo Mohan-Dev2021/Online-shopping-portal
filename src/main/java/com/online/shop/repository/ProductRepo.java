@@ -1,5 +1,7 @@
 package com.online.shop.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -10,6 +12,6 @@ import com.online.shop.model.Products;
 public interface ProductRepo extends MongoRepository<Products, String> {
 
 	@Query("{ product_id: ?0 }")
-	Products findByProductId(String productId);
+	Optional<Products> findByProductId(String productId);
 
 }

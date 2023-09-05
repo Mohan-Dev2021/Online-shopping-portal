@@ -1,5 +1,5 @@
 
-package com.online.shop.controller;
+package com.online.shop.rest.controller;
 
 import java.util.Set;
 

@@ -1,6 +1,5 @@
 package com.online.shop.security;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -29,7 +29,15 @@ public class JwtService {
 	@Value("${token.signing.key}")
 	private String jwtSigningKey;
 
-	/* Method used to extract the username from the token */
+	public static final long FORTY_FIVE_MINUTE_DURATION = 2700000;
+
+	/*
+	 * public static final long THREE_MONTH_DURATION = 7776000000L; public static
+	 * final long ONE_MINUTE_DURATION = 60000;/*
+	 * 
+	 * 
+	 * /* Method used to extract the username from the token
+	 */
 	public String extractUserName(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
@@ -59,8 +67,8 @@ public class JwtService {
 	private String token(Map<String, String> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)).setIssuer(jwtSigningKey)
-				.compact();
+				.setExpiration(new Date(System.currentTimeMillis() + FORTY_FIVE_MINUTE_DURATION))
+				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
 	}
 
 	/* Method used to check whether the user's token is expired or not */
@@ -78,8 +86,10 @@ public class JwtService {
 		return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
 	}
 
-	/* Method used to encyrpt the signing key using SHA */
-	private Key getSigningKey() {
+	/*
+	 * Method used to encyrpt the signing key using SHA
+	 */
+	private java.security.Key getSigningKey() {
 		byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}

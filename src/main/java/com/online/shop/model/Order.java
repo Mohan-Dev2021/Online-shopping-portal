@@ -1,11 +1,12 @@
 package com.online.shop.model;
-
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.online.shop.dto.PaymentDto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,25 +14,19 @@ import lombok.experimental.Accessors;
 
 @Data
 @NoArgsConstructor
+@Document(collection = "app_order")
 @Accessors(chain = true)
-@Document(collection = "app_productImage")
-public class ProductImage {
+public class Order {
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Indexed
-	@Field(name = "image_id")
-	private String imageId;
+	private Customer customer;
 
-	@Field(name = "image_name")
-	private String imageName;
+	private Address address;
 
-	@Field(name = "image_format")
-	private String imageFormat;
+	private List<Products> products;
 
-	@Field(name = "product_image")
-	private byte[] image;
-	
-	private String ImageFormate ;
+	private List<Payment> payment;
 
 }
