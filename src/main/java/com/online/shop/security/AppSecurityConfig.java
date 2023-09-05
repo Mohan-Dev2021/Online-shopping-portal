@@ -56,8 +56,9 @@ public class AppSecurityConfig {
 				.authorizeHttpRequests(request -> request.requestMatchers("/authentication/v1/sign-up").permitAll()
 						.requestMatchers("/authentication/welcome-page").permitAll()
 						.requestMatchers("/authentication/v1/sign-in").permitAll()
-						.requestMatchers("/authentication/management/v1/sign-up").permitAll().requestMatchers("/product/**")
-						.permitAll().requestMatchers("/user/**").permitAll().anyRequest().authenticated())
+						.requestMatchers("/authentication/management/v1/sign-up").permitAll()
+						.requestMatchers("/product/**").hasRole("ADMIN").requestMatchers("/user/**").permitAll()
+						.anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				.exceptionHandling((exception) -> exception.accessDeniedHandler(accessDeniedHanlder))
 				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
