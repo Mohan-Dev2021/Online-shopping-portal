@@ -6,7 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
 import org.springframework.validation.annotation.Validated;
+=======
+>>>>>>> 93392206682172df59cd318300eed817357448da
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +19,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+<<<<<<< HEAD
 import com.online.shop.dto.ProductImageDto;
 import com.online.shop.enums.ImageFormate;
 import com.online.shop.error_response.EShopException;
+=======
+import com.online.shop.model.ProductImage;
+>>>>>>> 93392206682172df59cd318300eed817357448da
 import com.online.shop.service.ProductImageService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +33,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/product/image")
 @RequiredArgsConstructor
+<<<<<<< HEAD
 @Validated
+=======
+>>>>>>> 93392206682172df59cd318300eed817357448da
 public class ProductImageController {
 
 	private final ProductImageService productImageService;
@@ -34,6 +44,7 @@ public class ProductImageController {
 	@PostMapping
 	public ResponseEntity<String> insertProductImage(@RequestParam String id, @RequestPart MultipartFile imageFile)
 			throws IOException {
+<<<<<<< HEAD
 		System.out.println("type1 : "+imageFile.getContentType());
 		System.out.println("type2 : "+ImageFormate.PNG.getImgFormate());
 		
@@ -60,6 +71,17 @@ public class ProductImageController {
 		String contentType = "application/octet-stream";
 		String headerValue = "attachment; filename=\"" + resourceImage.getImageName() + "\"";
 		return (ResponseEntity<byte[]>) ResponseEntity.status(HttpStatus.OK).contentType(MediaType.parseMediaType(contentType))
+=======
+		return ResponseEntity.status(HttpStatus.CREATED).body(productImageService.insertProductImage(id, imageFile));
+	}
+
+	@GetMapping
+	public ResponseEntity<byte[]> getProductImageById(@RequestParam String productImageid) {
+		ProductImage resourceImage = productImageService.getProductImageById(productImageid);
+		String contentType = "application/octet-stream";
+		String headerValue = "attachment; filename=\"" + resourceImage.getImageName() + "\"";
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.parseMediaType(contentType))
+>>>>>>> 93392206682172df59cd318300eed817357448da
 				.header(HttpHeaders.CONTENT_DISPOSITION, headerValue).body(resourceImage.getImage());
 	}
 

@@ -2,11 +2,13 @@ package com.online.shop.serviceImpl;
 
 import java.io.IOException;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+<<<<<<< HEAD
 import com.online.shop.dto.ProductImageDto;
+=======
+>>>>>>> 93392206682172df59cd318300eed817357448da
 import com.online.shop.error_response.EShopException;
 import com.online.shop.model.ProductImage;
 import com.online.shop.model.Products;
@@ -26,9 +28,13 @@ public class ProductImageServiceImpl implements ProductImageService {
 	private final ProductRepo productRepo;
 
 	private final EShopUtility utility;
+<<<<<<< HEAD
 	
 	private final ModelMapper modelMap;
 	
+=======
+
+>>>>>>> 93392206682172df59cd318300eed817357448da
 	@Override
 	public String insertProductImage(String id, MultipartFile imageFile) throws IOException {
 		Products existingproduct = productRepo.findById(id)
@@ -42,6 +48,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 		return imageInsertedProduct.getProductImage().getId();
 	}
 
+<<<<<<< HEAD
 //	@Override
 //	public ProductImageDto getProductImageById(String productImageid) {
 //		ProductImage existingProductImage = productImageRepo.findById(productImageid)
@@ -58,6 +65,14 @@ public class ProductImageServiceImpl implements ProductImageService {
 		ProductImageDto productDto=modelMap.map(existingProductImage, ProductImageDto.class);
 		
 		return productDto;
+=======
+	@Override
+	public ProductImage getProductImageById(String productImageid) {
+		ProductImage existingProductImage = productImageRepo.findById(productImageid)
+				.orElseThrow(() -> new EShopException().setErrorCode(404)
+						.setMessage("Product image doesn't exists!... - " + productImageid));
+		return existingProductImage;
+>>>>>>> 93392206682172df59cd318300eed817357448da
 	}
 
 	@Override
@@ -71,8 +86,11 @@ public class ProductImageServiceImpl implements ProductImageService {
 		}
 	}
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 93392206682172df59cd318300eed817357448da
 }

@@ -1,7 +1,10 @@
 package com.online.shop.serviceImpl;
 
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+>>>>>>> 93392206682172df59cd318300eed817357448da
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,7 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
 import com.mongodb.internal.operation.FindAndDeleteOperation;
+=======
+>>>>>>> 93392206682172df59cd318300eed817357448da
 import com.online.shop.dto.PaginationDtoResponse;
 import com.online.shop.dto.ProductDto;
 import com.online.shop.dto.ProductImageDto;
@@ -32,6 +38,8 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ModelMapper modelMapper;
 	private final ProductImageRepo productImageRepo;
+	private final EShopUtility utility;
+
 	private final EShopUtility utility;
 
 	@Override
@@ -76,12 +84,16 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Boolean removeProductById(String id) throws NotFoundException {
 		try {
+<<<<<<< HEAD
 		Optional<Products> removeproducId=productRepo.findById(id);
 		if(removeproducId.isPresent()) {
 		String imageId= removeproducId.get().getId();
 			productImageRepo.deleteById(imageId);
 		}
 		productRepo.deleteById(id);
+=======
+			productRepo.deleteById(id);
+>>>>>>> 93392206682172df59cd318300eed817357448da
 			return true;
 		} catch (Exception ex) {
 			throw new EShopException().setErrorCode(500)
