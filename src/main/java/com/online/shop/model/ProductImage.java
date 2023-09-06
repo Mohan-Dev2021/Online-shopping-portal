@@ -31,10 +31,8 @@ public class ProductImage {
 
 	@Field(name = "product_image")
 	private byte[] image;
-<<<<<<< HEAD
+
 	
-	private String ImageFormate ;
-=======
->>>>>>> 93392206682172df59cd318300eed817357448da
+
 
 }

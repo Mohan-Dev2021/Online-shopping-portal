@@ -16,11 +16,7 @@ import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.LoginRequestDto;
 import com.online.shop.dto.ManagerDto;
 import com.online.shop.enums.ROLE;
-<<<<<<< HEAD
-import com.online.shop.error_response.DuplicateEntryException;
 import com.online.shop.error_response.EShopException;
-=======
->>>>>>> 93392206682172df59cd318300eed817357448da
 import com.online.shop.model.Address;
 import com.online.shop.model.Authorities;
 import com.online.shop.model.Customer;
