@@ -1,19 +1,21 @@
 package com.online.shop.security;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
+import com.online.shop.model.Customer;
+import com.online.shop.repository.UserRepo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Jwt service - Service which is used to generate the json web token with
@@ -24,8 +26,10 @@ import io.jsonwebtoken.security.Keys;
  * @author Mohanlal
  */
 @Service
+@RequiredArgsConstructor
 public class JwtService {
-
+ private final UserRepo userRepo;
+ 
 	@Value("${token.signing.key}")
 	private String jwtSigningKey;
 
@@ -45,8 +49,10 @@ public class JwtService {
 	/* Method used to generate the token based on the user details */
 	public String generateToken(UserDetails userDetails) {
 		Map<String, String> claims = new HashMap<>();
+		Optional<Customer> userDetail=userRepo.findByEmailId(userDetails.getUsername());
 		userDetails.getAuthorities().stream().forEach(authority -> {
 			claims.put("role", authority.getAuthority());
+			claims.put("id",userDetail.get().getId());
 		});
 		return token(claims, userDetails);
 	}

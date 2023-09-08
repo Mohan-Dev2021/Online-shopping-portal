@@ -41,7 +41,7 @@ public class CustomerDto {
 
 	@NotEmpty(message = "Please Enter Your Email Address")
 	@Email(message = "Please Enter Valid Email Address")
-	@Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",message = "Email is not valid" )
+//	@Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",message = "Email is not valid" )
 	private String emailId;
 
 	

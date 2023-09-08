@@ -57,7 +57,7 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(saveProduct));
 	}
 
-	// create PUT api
+
 	@Description(value = "Update products details  depends on productId from existing database")
 	@PutMapping
 	public ResponseEntity<ProductDto> updateProducts(@RequestBody ProductDto productDto) {

@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.online.shop.dto.ProductDto;
 import com.online.shop.dto.ProductImageDto;
 import com.online.shop.error_response.EShopException;
 import com.online.shop.model.ProductImage;
@@ -42,22 +43,16 @@ public class ProductImageServiceImpl implements ProductImageService {
 		return imageInsertedProduct.getProductImage().getId();
 	}
 
-//	@Override
-//	public ProductImageDto getProductImageById(String productImageid) {
-//		ProductImage existingProductImage = productImageRepo.findById(productImageid)
-//				.orElseThrow(() -> new EShopException().setErrorCode(404)
-//						.setMessage("Product image doesn't exists!... - " + productImageid));
-//		return existingProductImage;
-//	}
+
 
 	@Override
 	public ProductImageDto getProductImageById(String productImageid) {
 		ProductImage existingProductImage = productImageRepo.findById(productImageid)
 				.orElseThrow(() -> new EShopException().setErrorCode(404)
 						.setMessage("Product image doesn't exists!... - " + productImageid));
-		ProductImageDto productDto = modelMap.map(existingProductImage, ProductImageDto.class);
-
-		return productDto;
+		ProductImageDto productImageDto = utility.toConvert(existingProductImage, ProductImageDto.class);
+//		ProductImageDto productImageDto=modelMap.map(existingProductImage, ProductImageDto.class);
+		return productImageDto;
 	}
 
 	@Override

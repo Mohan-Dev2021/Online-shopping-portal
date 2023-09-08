@@ -36,12 +36,9 @@ public class ProductImageController {
 	@PostMapping
 	public ResponseEntity<String> insertProductImage(@RequestParam String id, @RequestPart MultipartFile imageFile)
 			throws IOException {
-
-		System.out.println("type1 : " + imageFile.getContentType());
-		System.out.println("type2 : " + ImageFormate.PNG.getImgFormate());
-
 		if (!(imageFile.getContentType().equalsIgnoreCase(ImageFormate.PNG.getImgFormate())
-				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPG.getImgFormate()))) {
+				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPG.getImgFormate())
+				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPEG.getImgFormate()))){
 
 			throw new EShopException().setErrorCode(406).setMessage("image formate is not accepted ");
 		}
