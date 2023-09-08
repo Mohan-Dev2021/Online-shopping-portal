@@ -20,11 +20,15 @@ import lombok.NoArgsConstructor;
 @JsonInclude(value = Include.NON_NULL)
 public class PaymentDto {
 
-	@Id
 	private String id ;
 	
 	private com.online.shop.enums.PaymentType PaymentType;
-	Map<String, Object> paymentSource ;
+
+	
+	
+	
+	private Map<String, Object> paymentSource;
+
 	
      @CreatedDate
      @Field(name="date_and_time")

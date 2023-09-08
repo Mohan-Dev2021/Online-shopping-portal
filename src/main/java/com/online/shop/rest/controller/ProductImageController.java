@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 public class ProductImageController {
 
-	private final ProductImageService productImageService;
+	private final ProductImageService productImageService;                                                                                                                                                                                       
 
 	@PostMapping
 	public ResponseEntity<String> insertProductImage(@RequestParam String id, @RequestPart MultipartFile imageFile)
