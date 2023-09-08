@@ -50,10 +50,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //user registration serviceImpl
 	@Override
 	public CustomerDto signUp(CustomerDto customer) {
-		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
-		if(customers.isPresent()) {
-			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
-		}
+//		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
+//		if(customers.isPresent()) {
+//			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
+//		}
 		Customer saveDetail = modelMap.map(customer, Customer.class);
 		Address address = modelMap.map(customer.getAddress(), Address.class);
 		saveDetail.setAddress(address);

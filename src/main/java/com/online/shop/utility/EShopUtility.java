@@ -28,4 +28,10 @@ public class EShopUtility {
 		
 	}
 	
+	public String getCartId() {
+		String uuid = UUID.randomUUID().toString();
+		int length = uuid.length();
+		return "CART" + LocalDate.now().getMonthValue() + uuid.substring(length - 8); 
+		
+	}
 }
