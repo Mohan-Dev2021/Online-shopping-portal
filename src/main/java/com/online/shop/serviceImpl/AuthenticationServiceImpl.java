@@ -25,6 +25,7 @@ import com.online.shop.repository.ManagerRepo;
 import com.online.shop.repository.UserRepo;
 import com.online.shop.security.UserServiceImpl;
 import com.online.shop.service.AuthenticationService;
+import com.online.shop.utility.EShopUtility;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,7 @@ import lombok.RequiredArgsConstructor;
  * 
  */
 @Service
+
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -46,23 +48,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final ModelMapper modelMap;
 	private final PasswordEncoder passwordEncoder;
 	private final UserServiceImpl userService;
+	private final EShopUtility utility;
  
 //user registration serviceImpl
 	@Override
 	public CustomerDto signUp(CustomerDto customer) {
+
 //		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
 //		if(customers.isPresent()) {
 //			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
 //		}
-		Customer saveDetail = modelMap.map(customer, Customer.class);
-		Address address = modelMap.map(customer.getAddress(), Address.class);
+		
+
+		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
+		if(customers.isPresent()) {
+			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
+		}
+		Customer saveDetail=utility.toConvert(customer, CustomerDto.class);
+		Address address=utility.toConvert(customer.getAddress(), Address.class);
+
 		saveDetail.setAddress(address);
 		saveDetail.setPassword(passwordEncoder.encode(customer.getPassword()));
 		saveDetail.setUserAuthorities(List.of(new Authorities().setRole(ROLE.USER.getRoleName())));
 		Customer saveDetailValues = userRepository.save(saveDetail);
-		CustomerDto customerDto = modelMap.map(saveDetailValues, CustomerDto.class);
-		
-		AddressDto addressDto = modelMap.map(customerDto.getAddress(), AddressDto.class);
+		CustomerDto customerDto = utility.toConvert(saveDetailValues, CustomerDto.class);
+		AddressDto addressDto = utility.toConvert(customerDto.getAddress(), AddressDto.class);
 		customerDto.setAddress(addressDto);
 		return customerDto;
 	}
@@ -70,12 +80,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //management registration serviceImpl
 	@Override
 	public ManagerDto managementSignUp(ManagerDto manager) {
-		Manager saveDetail = modelMap.map(manager, Manager.class);
+//		Manager saveDetail = modelMap.map(manager, Manager.class);
+		Manager saveDetail=utility.toConvert(manager, Manager.class);
 		saveDetail.setPassword(passwordEncoder.encode(manager.getPassword()));
 		saveDetail.setManagerAuthorities(List.of(new Authorities().setRole(ROLE.ADMIN.getRoleName())));
 		Manager saveDetailValues = managerRepo.save(saveDetail);
-		ManagerDto ManagerDto = modelMap.map(saveDetailValues, ManagerDto.class);
-		return ManagerDto;
+//		ManagerDto ManagerDto = modelMap.map(saveDetailValues, ManagerDto.class);
+		ManagerDto managerDto=utility.toConvert(saveDetailValues, ManagerDto.class);
+		return managerDto;
 	}
 
 	@Override
