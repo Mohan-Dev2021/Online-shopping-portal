@@ -16,6 +16,7 @@ import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.LoginRequestDto;
 import com.online.shop.dto.ManagerDto;
 import com.online.shop.enums.ROLE;
+import com.online.shop.error_response.EShopException;
 import com.online.shop.model.Address;
 import com.online.shop.model.Authorities;
 import com.online.shop.model.Customer;
@@ -45,10 +46,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final ModelMapper modelMap;
 	private final PasswordEncoder passwordEncoder;
 	private final UserServiceImpl userService;
-
+ 
 //user registration serviceImpl
 	@Override
 	public CustomerDto signUp(CustomerDto customer) {
+		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
+		if(customers.isPresent()) {
+			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
+		}
 		Customer saveDetail = modelMap.map(customer, Customer.class);
 		Address address = modelMap.map(customer.getAddress(), Address.class);
 		saveDetail.setAddress(address);
@@ -56,6 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		saveDetail.setUserAuthorities(List.of(new Authorities().setRole(ROLE.USER.getRoleName())));
 		Customer saveDetailValues = userRepository.save(saveDetail);
 		CustomerDto customerDto = modelMap.map(saveDetailValues, CustomerDto.class);
+		
 		AddressDto addressDto = modelMap.map(customerDto.getAddress(), AddressDto.class);
 		customerDto.setAddress(addressDto);
 		return customerDto;

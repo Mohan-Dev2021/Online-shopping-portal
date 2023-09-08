@@ -27,5 +27,4 @@ public class RequestFilter implements Filter {
 		response.setHeader("Access-Control-Max-Age", String.valueOf(180));
 		chain.doFilter(request, response);
 	}
-
 }

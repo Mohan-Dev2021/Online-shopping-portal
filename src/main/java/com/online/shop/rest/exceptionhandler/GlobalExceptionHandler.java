@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.online.shop.error_response.DuplicateEntryException;
 import com.online.shop.error_response.EShopException;
 import com.online.shop.error_response.ErrorResponse;
 
@@ -36,13 +37,12 @@ public class GlobalExceptionHandler {
 				.body(new ErrorResponse().setStatus(exception.getErrorCode()).setErrorMsg(exception.getMessage())
 						.setTimeStamp(LocalDateTime.now()));
 	}
-	
-	@ExceptionHandler(Exception.class)
-	@ResponseStatus
-	public ResponseEntity<ErrorResponse> exception(Exception e){
+
+	@ExceptionHandler(DuplicateEntryException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ErrorResponse> exception(DuplicateEntryException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body(new ErrorResponse().setStatus(400).setErrorMsg(e.getMessage())
-						.setTimeStamp(LocalDateTime.now()));
+				.body(new ErrorResponse().setStatus(400).setErrorMsg(e.getMessage()).setTimeStamp(LocalDateTime.now()));
 	}
 
 }

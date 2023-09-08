@@ -12,4 +12,6 @@ import com.online.shop.model.ProductImage;
  */
 public interface ProductImageRepo extends MongoRepository<ProductImage, String> {
 
+	
+
 }

@@ -2,6 +2,9 @@ package com.online.shop.dto;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(value = Include.NON_NULL)
 public class ProductDto {
 
 	private String id;
@@ -24,17 +28,17 @@ public class ProductDto {
 	 * Not required
 	 * 
 	 * @NotBlank(message = "productId should  not be blank")
-	 */
+	 */	
 	private String productId;
-
+	
 	@NotNull(message = "products should not be null")
-//	 @Pattern(regexp = "(^$|[0-9]{10})", message = "quantity  should be numeric")
+//  @Pattern(regexp = "(^$|[0-9]{10})", message = "quantity  should be numeric")
 	private Double quantity;
 
 	@NotNull(message = "price should not be null")
 //	 @Pattern(regexp = "(^$|[0-9]{7})", message = "price  should be numeric")
 	private BigDecimal price;
 
-	 private ProductImageDto productImageDto;
+	private ProductImageDto productImageDto;
 
 }

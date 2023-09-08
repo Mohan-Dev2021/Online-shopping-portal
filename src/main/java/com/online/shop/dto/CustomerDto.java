@@ -1,9 +1,12 @@
 package com.online.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,6 +23,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@JsonInclude(value = Include.NON_NULL)
 public class CustomerDto {
 
 	private String id;
@@ -35,14 +39,14 @@ public class CustomerDto {
 	@Size(min = 1, max = 10, message = "Last Name should have atleast 2-10 characters")
 	private String lastName;
 
-	
-	@NotBlank(message = "EmailId shouldn't be empty!")
+	@NotEmpty(message = "Please Enter Your Email Address")
+	@Email(message = "Please Enter Valid Email Address")
 	@Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",message = "Email is not valid" )
 	private String emailId;
 
 	
-	@NotNull(message = "Please enter a password")
-    @Pattern(regexp ="^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "Invalid password format")
+	@NotBlank(message = "Please enter a password")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password should contain 8 characters with (1 lowercase, 1 uppercase, 1 symbol , 1 number)")
 	private String password;
 
 

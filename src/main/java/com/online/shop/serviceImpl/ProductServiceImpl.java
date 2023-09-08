@@ -1,6 +1,7 @@
 package com.online.shop.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import com.online.shop.dto.ProductImageDto;
 import com.online.shop.error_response.EShopException;
 import com.online.shop.model.ProductImage;
 import com.online.shop.model.Products;
+import com.online.shop.repository.ProductImageRepo;
 import com.online.shop.repository.ProductRepo;
 import com.online.shop.service.ProductService;
 import com.online.shop.utility.EShopUtility;
@@ -28,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
 	private final ProductRepo productRepo;
 
 	private final ModelMapper modelMapper;
+
+	private final ProductImageRepo productImageRepo;
 
 	private final EShopUtility utility;
 
@@ -73,6 +77,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Boolean removeProductById(String id) throws NotFoundException {
 		try {
+			Optional<Products> removeproducId = productRepo.findById(id);
+			if (removeproducId.isPresent()) {
+				String imageId = removeproducId.get().getId();
+				productImageRepo.deleteById(imageId);
+			}
 			productRepo.deleteById(id);
 			return true;
 		} catch (Exception ex) {
@@ -88,8 +97,10 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDto> toProductDtolist = pagableProducts.getContent().stream()
 				.map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
 		PaginationDtoResponse<ProductDto> paginatedRes = new PaginationDtoResponse<ProductDto>()
-				.setContent(toProductDtolist).setNumberOfElements(pagableProducts.getNumberOfElements()).setTotalElements(pagableProducts.getTotalElements())
-				.setPageNo(pageNo).setSort(pagableProducts.getSort()).setOffset(offset).setHasPrevious(pagableProducts.getPageable().hasPrevious());
+				.setContent(toProductDtolist).setNumberOfElements(pagableProducts.getNumberOfElements())
+				.setTotalElements(pagableProducts.getTotalElements()).setPageNo(pageNo)
+				.setSort(pagableProducts.getSort()).setOffset(offset)
+				.setHasPrevious(pagableProducts.getPageable().hasPrevious());
 		return paginatedRes;
 	}
 

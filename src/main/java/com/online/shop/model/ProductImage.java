@@ -32,4 +32,7 @@ public class ProductImage {
 	@Field(name = "product_image")
 	private byte[] image;
 
+	
+
+
 }

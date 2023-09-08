@@ -2,9 +2,11 @@ package com.online.shop.serviceImpl;
 
 import java.io.IOException;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.online.shop.dto.ProductImageDto;
 import com.online.shop.error_response.EShopException;
 import com.online.shop.model.ProductImage;
 import com.online.shop.model.Products;
@@ -25,6 +27,8 @@ public class ProductImageServiceImpl implements ProductImageService {
 
 	private final EShopUtility utility;
 
+	private final ModelMapper modelMap;
+
 	@Override
 	public String insertProductImage(String id, MultipartFile imageFile) throws IOException {
 		Products existingproduct = productRepo.findById(id)
@@ -38,12 +42,22 @@ public class ProductImageServiceImpl implements ProductImageService {
 		return imageInsertedProduct.getProductImage().getId();
 	}
 
+//	@Override
+//	public ProductImageDto getProductImageById(String productImageid) {
+//		ProductImage existingProductImage = productImageRepo.findById(productImageid)
+//				.orElseThrow(() -> new EShopException().setErrorCode(404)
+//						.setMessage("Product image doesn't exists!... - " + productImageid));
+//		return existingProductImage;
+//	}
+
 	@Override
-	public ProductImage getProductImageById(String productImageid) {
+	public ProductImageDto getProductImageById(String productImageid) {
 		ProductImage existingProductImage = productImageRepo.findById(productImageid)
 				.orElseThrow(() -> new EShopException().setErrorCode(404)
 						.setMessage("Product image doesn't exists!... - " + productImageid));
-		return existingProductImage;
+		ProductImageDto productDto = modelMap.map(existingProductImage, ProductImageDto.class);
+
+		return productDto;
 	}
 
 	@Override

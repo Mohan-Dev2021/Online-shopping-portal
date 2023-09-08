@@ -53,11 +53,15 @@ public class AppSecurityConfig {
 	@Bean
 	SecurityFilterChain securityChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity.csrf((csrf) -> csrf.disable())
-				.authorizeHttpRequests(request -> request.requestMatchers("/authentication/v1/sign-up").permitAll()
+		 		.authorizeHttpRequests(request -> request.requestMatchers("/authentication/v1/sign-up").permitAll()
 						.requestMatchers("/authentication/welcome-page").permitAll()
 						.requestMatchers("/authentication/v1/sign-in").permitAll()
 						.requestMatchers("/authentication/management/v1/sign-up").permitAll()
-						.requestMatchers("/product/**").hasRole("ADMIN").requestMatchers("/user/**").permitAll()
+						.requestMatchers("/product/**").permitAll()
+						.requestMatchers("/user/**").permitAll()
+
+						.requestMatchers("/order/**").permitAll()
+						.requestMatchers("/payment/**").permitAll()
 						.anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				.exceptionHandling((exception) -> exception.accessDeniedHandler(accessDeniedHanlder))
