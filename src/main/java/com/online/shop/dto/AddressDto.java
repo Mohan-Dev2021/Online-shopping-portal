@@ -2,6 +2,9 @@ package com.online.shop.dto;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -14,6 +17,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@JsonInclude(value = Include.NON_NULL)
 public class AddressDto {
 	
 	
@@ -35,5 +39,6 @@ public class AddressDto {
 	// pin code is not applicable for pattern validation as integer so changed to string
 	@Size(min = 1, max = 6, message = "pincode should have atleast 1-6 characters")
 	private String pincode;
+
 
 }
