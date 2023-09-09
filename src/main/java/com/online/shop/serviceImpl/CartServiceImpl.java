@@ -82,8 +82,8 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public CartDto updateCartDto(CartDto saveCartDto) {
 		Optional<Cart> cartDto = cartRepo.findById(saveCartDto.getId());
-		if(cartDto.isPresent()) {
-			throw new EShopException().setErrorCode(406).setMessage("cart id doesn't exists!... - " );
+		if (cartDto.isPresent()) {
+			throw new EShopException(406, "cart id doesn't exists!... - ");
 		}
 		Cart CartEntity = modelMapper.map(cartDto, Cart.class);
 		Cart CartSave = cartRepo.save(CartEntity);

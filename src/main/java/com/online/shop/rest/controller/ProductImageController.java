@@ -31,16 +31,16 @@ import lombok.RequiredArgsConstructor;
 
 public class ProductImageController {
 
-	private final ProductImageService productImageService;                                                                                                                                                                                       
+	private final ProductImageService productImageService;
 
 	@PostMapping
 	public ResponseEntity<String> insertProductImage(@RequestParam String id, @RequestPart MultipartFile imageFile)
 			throws IOException {
 		if (!(imageFile.getContentType().equalsIgnoreCase(ImageFormate.PNG.getImgFormate())
 				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPG.getImgFormate())
-				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPEG.getImgFormate()))){
+				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPEG.getImgFormate()))) {
 
-			throw new EShopException().setErrorCode(406).setMessage("image formate is not accepted ");
+			throw new EShopException(406, "image formate is not accepted ");
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(productImageService.insertProductImage(id, imageFile));
 	}

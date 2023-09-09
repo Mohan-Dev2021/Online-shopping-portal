@@ -1,20 +1,26 @@
 package com.online.shop.security;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.online.shop.model.Customer;
+import com.online.shop.model.Manager;
+import com.online.shop.repository.ManagerRepo;
 import com.online.shop.repository.UserRepo;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -28,8 +34,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
- private final UserRepo userRepo;
- 
+	
+	private final UserRepo userRepo;
+
+	private final ManagerRepo managerRepo;
+
 	@Value("${token.signing.key}")
 	private String jwtSigningKey;
 
@@ -49,12 +58,22 @@ public class JwtService {
 	/* Method used to generate the token based on the user details */
 	public String generateToken(UserDetails userDetails) {
 		Map<String, String> claims = new HashMap<>();
-		Optional<Customer> userDetail=userRepo.findByEmailId(userDetails.getUsername());
-		userDetails.getAuthorities().stream().forEach(authority -> {
-			claims.put("role", authority.getAuthority());
-			claims.put("id",userDetail.get().getId());
-		});
-		return token(claims, userDetails);
+		Optional<Customer> userDetail = userRepo.findByEmailId(userDetails.getUsername());
+		if (userDetail.isEmpty()) {
+			Manager admin = managerRepo.findByEmailId(userDetails.getUsername())
+					.orElseThrow(() -> new UsernameNotFoundException("User doesn't exists!..."));
+			userDetails.getAuthorities().stream().forEach(authority -> {
+				claims.put("role", authority.getAuthority());
+				claims.put("id", admin.getId());
+			});
+			return token(claims, userDetails);
+		} else {
+			userDetails.getAuthorities().stream().forEach(authority -> {
+				claims.put("role", authority.getAuthority());
+				claims.put("id", userDetail.get().getId());
+			});
+			return token(claims, userDetails);
+		}
 	}
 
 	/* Method used to validate the user's jwt token */

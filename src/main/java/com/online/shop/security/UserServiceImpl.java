@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserDetailsService {
 
 	/* Generate JWT token for user */
 	public String generateToken(User user) {
-		UserDetails userdetails = this.loadUserByUsername(user.getUsername());
+		UserDetails userdetails= new User(user.getUsername(), user.getPassword(), user.getAuthorities());
 		return jwtService.generateToken(userdetails);
 	}
 

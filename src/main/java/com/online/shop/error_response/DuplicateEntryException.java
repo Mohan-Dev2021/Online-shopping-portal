@@ -1,25 +1,36 @@
 package com.online.shop.error_response;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+public class DuplicateEntryException extends EShopException {
 
-@Accessors(chain = true)
-@Data
-@NoArgsConstructor
-public class DuplicateEntryException extends EShopException{/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6531011536469652062L;
-	
 	public DuplicateEntryException(Integer errorCode, String message) {
-	super();
-	this.errorCode = errorCode;
-	this.message = message;
-}
+		super(errorCode, message);
+		// TODO Auto-generated constructor stub
+	}
 
 	private Integer errorCode;
-	
+
 	private String message;
+
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	/**
+	* 
+	*/
+	private static final long serialVersionUID = 6531011536469652062L;
+
 
 }

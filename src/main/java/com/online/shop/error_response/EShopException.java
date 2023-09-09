@@ -1,12 +1,5 @@
 package com.online.shop.error_response;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-
-@Data
-@Accessors(chain = true)
-@EqualsAndHashCode(callSuper = false)
 public class EShopException extends RuntimeException {
 
 	/**
@@ -17,4 +10,26 @@ public class EShopException extends RuntimeException {
 	private Integer errorCode;
 
 	private String message;
+
+	public EShopException(Integer errorCode, String message) {
+		super();
+		this.errorCode = errorCode;
+		this.message = message;
+	}
+
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }

@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.online.shop.dto.PaymentDto;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -26,23 +24,23 @@ public class Order {
 	@Indexed
 	@Field(name = "order_id")
 	private String orderId;
-	
-	@Field(name="price")
+
+	@Field(name = "price")
 	private int price;
-	
-	@Field(name="qty")
+
+	@Field(name = "qty")
 	private int qty;
-	
-	@Field(name="total")
+
+	@Field(name = "total")
 	private int total;
-	
+
 	private Customer customer;
 
 	private Address address;
 
 	private List<Products> products;
 
-	private List<Status> status;
+	private Status status;
 
 	private List<Payment> payment;
 

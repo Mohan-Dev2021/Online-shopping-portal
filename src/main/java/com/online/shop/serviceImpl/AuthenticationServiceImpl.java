@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,33 +40,25 @@ import lombok.RequiredArgsConstructor;
  * 
  */
 @Service
-
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private final UserRepo userRepository;
 	private final ManagerRepo managerRepo;
-	private final ModelMapper modelMap;
 	private final PasswordEncoder passwordEncoder;
 	private final UserServiceImpl userService;
 	private final EShopUtility utility;
- 
+	private final AuthenticationManager authenticationManager;
+
 //user registration serviceImpl
 	@Override
 	public CustomerDto signUp(CustomerDto customer) {
-
-//		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
-//		if(customers.isPresent()) {
-//			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
-//		}
-		
-
-		Optional<Customer> customers=userRepository.findByEmailId(customer.getEmailId());
-		if(customers.isPresent()) {
-			throw new EShopException().setErrorCode(406).setMessage("The emailId is already exist please try with new emailId");
+		Optional<Customer> customers = userRepository.findByEmailId(customer.getEmailId());
+		if (customers.isPresent()) {
+			throw new EShopException(406, "The emailId is already exist please try with new emailId");
 		}
-		Customer saveDetail=utility.toConvert(customer, CustomerDto.class);
-		Address address=utility.toConvert(customer.getAddress(), Address.class);
+		Customer saveDetail = utility.toConvert(customer, CustomerDto.class);
+		Address address = utility.toConvert(customer.getAddress(), Address.class);
 
 		saveDetail.setAddress(address);
 		saveDetail.setPassword(passwordEncoder.encode(customer.getPassword()));
@@ -80,13 +73,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //management registration serviceImpl
 	@Override
 	public ManagerDto managementSignUp(ManagerDto manager) {
-//		Manager saveDetail = modelMap.map(manager, Manager.class);
-		Manager saveDetail=utility.toConvert(manager, Manager.class);
+		Manager saveDetail = utility.toConvert(manager, Manager.class);
 		saveDetail.setPassword(passwordEncoder.encode(manager.getPassword()));
 		saveDetail.setManagerAuthorities(List.of(new Authorities().setRole(ROLE.ADMIN.getRoleName())));
 		Manager saveDetailValues = managerRepo.save(saveDetail);
-//		ManagerDto ManagerDto = modelMap.map(saveDetailValues, ManagerDto.class);
-		ManagerDto managerDto=utility.toConvert(saveDetailValues, ManagerDto.class);
+		ManagerDto managerDto = utility.toConvert(saveDetailValues, ManagerDto.class);
 		return managerDto;
 	}
 
@@ -115,18 +106,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private String getToken(UserDetails user, LoginRequestDto requestDto) {
 		if (passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-//			String emailId = requestDto.getEmailId(),password=requestDto.getPassword();
-//			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(emailId, password);
-//			authenticationManager.authenticate(authenticationToken);
-//			List<GrantedAuthority> authorities = new ArrayList<>();
-//			user.getAuthorities().stream().forEach(u -> {
-//				authorities.add(new SimpleGrantedAuthority(u.getAuthority()));	
-//			});
-//			Map<String, Object> claims = new HashMap<>();
-//			claims.put("username", user.getUsername());
-//			user.getAuthorities().stream().forEach(u -> {
-//				claims.put("role" + u.hashCode(), u.getAuthority());
-//			});
+			String emailId = requestDto.getEmailId(), password = requestDto.getPassword();
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(emailId,
+					password);
+			authenticationManager.authenticate(authenticationToken);
 			String generateToken = userService
 					.generateToken(new User(user.getUsername(), user.getPassword(), user.getAuthorities()));
 			return generateToken;

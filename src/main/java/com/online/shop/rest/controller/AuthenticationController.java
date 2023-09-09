@@ -75,7 +75,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/v1/sign-in")
-	public ResponseEntity<AppResponse<String>> signIn(@RequestBody LoginRequestDto requestDto) {
+	public ResponseEntity<AppResponse<String>> signIn(@RequestBody @Valid LoginRequestDto requestDto) {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new AppResponse<>(true, HttpStatus.OK.value(), authenticationService.signIn(requestDto)));
 	}

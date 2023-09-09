@@ -1,29 +1,18 @@
 package com.online.shop.serviceImpl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.online.shop.dto.AddressDto;
-import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.OrderDto;
-import com.online.shop.dto.PaginationDtoResponse;
 import com.online.shop.dto.PaymentDto;
-import com.online.shop.dto.ProductDto;
-import com.online.shop.dto.ProductImageDto;
-import com.online.shop.error_response.EShopException;
 import com.online.shop.error_response.OrderNotFoundException;
-import com.online.shop.model.Customer;
 import com.online.shop.model.Order;
 import com.online.shop.model.Payment;
-import com.online.shop.model.Products;
 import com.online.shop.repository.OrderRepo;
 import com.online.shop.repository.PaymentRepo;
 import com.online.shop.service.PaymentService;
@@ -40,7 +29,7 @@ public class PaymentServiceImpl implements PaymentService {
 	private final ModelMapper mapper;
 
 	private final PaymentRepo paymentRepo;
-	
+
 	private final EShopUtility utility;
 
 	@Override
@@ -66,13 +55,12 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public OrderDto getOrderPaymentById(String id) {
-		Order existingOrder = orderRep.findById(id).orElseThrow(
-				() -> new OrderNotFoundException().setErrorCode(404).setMessage("Order id not found-" + id));
-		OrderDto orderDto=utility.toConvert(existingOrder,OrderDto.class);
-		List<PaymentDto> paymentDto=utility.toConvertList(existingOrder.getPayment(),  PaymentDto.class);
-	     orderDto.setPayment(paymentDto);
+		Order existingOrder = orderRep.findById(id)
+				.orElseThrow(() -> new OrderNotFoundException(404, "Order id not found-" + id));
+		OrderDto orderDto = utility.toConvert(existingOrder, OrderDto.class);
+		List<PaymentDto> paymentDto = utility.toConvertList(existingOrder.getPayment(), PaymentDto.class);
+		orderDto.setPayment(paymentDto);
 		return orderDto;
-		
 
 //		OrderDto orderDto = mapper.map(existingOrder, OrderDto.class);
 //		Optional<Payment> payment = paymentRepo.findById(id);
@@ -80,10 +68,7 @@ public class PaymentServiceImpl implements PaymentService {
 //				.collect(Collectors.toList());
 //		orderDto.setPayment(paymentdto);
 //		return orderDto;
-				
-	}
-		
 
-	
+	}
 
 }

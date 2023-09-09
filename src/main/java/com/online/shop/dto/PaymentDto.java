@@ -1,10 +1,9 @@
 package com.online.shop.dto;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,17 +19,13 @@ import lombok.NoArgsConstructor;
 @JsonInclude(value = Include.NON_NULL)
 public class PaymentDto {
 
-	private String id ;
-	
+	private String id;
+
 	private com.online.shop.enums.PaymentType PaymentType;
 
-	
-	
-	
 	private Map<String, Object> paymentSource;
 
-	
-     @CreatedDate
-     @Field(name="date_and_time")
-	 private LocalDateTime DateAndTime;;
+	@CreatedDate
+	@Field(name = "date_and_time")
+	private LocalDateTime DateAndTime;;
 }

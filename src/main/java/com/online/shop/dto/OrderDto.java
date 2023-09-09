@@ -3,10 +3,6 @@ package com.online.shop.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.online.shop.model.Customer;
-import com.online.shop.model.Products;
-
-import ch.qos.logback.core.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +28,7 @@ public class OrderDto {
 
 	private List<ProductDto> products;
 
-	private List<StatusDto> status;
+	private StatusDto status;
 
 	private List<PaymentDto> payment;
 }

@@ -1,48 +1,70 @@
 package com.online.shop.rest.exceptionhandler;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
-import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.online.shop.error_response.DuplicateEntryException;
 import com.online.shop.error_response.EShopException;
 import com.online.shop.error_response.ErrorResponse;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus
-	public ResponseEntity<ErrorResponse> handleInvalidArgument(MethodArgumentNotValidException exception) {
+	@ResponseBody
+	public ErrorResponse handleInvalidArgument(MethodArgumentNotValidException exception) {
 		ErrorResponse response = new ErrorResponse();
-		exception.getBindingResult().getAllErrors().stream().map((error) -> {
-			new ErrorResponse().setErrorMsg(((FieldError) error).getField() + " - " + error.getDefaultMessage())
-					.setStatus(400).setTimeStamp(LocalDateTime.now());
-			return response;
-		}).collect(Collectors.toList());
-		return ResponseEntity.status(response.getStatus()).body(response);
+		exception.getBindingResult().getAllErrors().forEach((error) -> {
+			String errorMessage = error.getDefaultMessage();
+			response.setStatus(400);
+			response.setErrorMsg(errorMessage);
+			response.setTimeStamp(LocalDateTime.now());
+		});
+		return response;
 	}
 
 	@ExceptionHandler(EShopException.class)
 	@ResponseStatus
-	public ResponseEntity<ErrorResponse> genericExceptionHandler(EShopException exception) {
-		return ResponseEntity.status(exception.getErrorCode())
-				.body(new ErrorResponse().setStatus(exception.getErrorCode()).setErrorMsg(exception.getMessage())
-						.setTimeStamp(LocalDateTime.now()));
+	@ResponseBody
+	public ErrorResponse genericExceptionHandler(EShopException exception) {
+		return new ErrorResponse().setStatus(exception.getErrorCode()).setErrorMsg(exception.getMessage())
+				.setTimeStamp(LocalDateTime.now());
 	}
 
 	@ExceptionHandler(DuplicateEntryException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorResponse> exception(DuplicateEntryException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body(new ErrorResponse().setStatus(400).setErrorMsg(e.getMessage()).setTimeStamp(LocalDateTime.now()));
+	@ResponseBody
+	public ErrorResponse exception(DuplicateEntryException e) {
+		return new ErrorResponse().setStatus(400).setErrorMsg(e.getMessage()).setTimeStamp(LocalDateTime.now());
+	}
+
+//	@ExceptionHandler(Exception.class)
+//	@ResponseStatus
+//	public ResponseEntity<ErrorResponse> generalException(Exception e) {
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//				.body(new ErrorResponse(e.getLocalizedMessage(), 400, LocalDateTime.now()));
+//	}
+
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorResponse resourceNotFound(EShopException ex) {
+		ErrorResponse response = new ErrorResponse();
+
+		if (ex.getLocalizedMessage() == null) {
+			return new ErrorResponse(response.getErrorMsg(), 400, response.getTimeStamp());
+		}
+		response.setStatus(ex.getErrorCode());
+		response.setErrorMsg(ex.getMessage());
+		response.setTimeStamp(LocalDateTime.now());
+		return new ErrorResponse(response.getErrorMsg(), 400, response.getTimeStamp());
 	}
 
 }
