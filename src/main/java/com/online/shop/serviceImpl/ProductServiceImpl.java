@@ -122,4 +122,12 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
+//	@Override
+	public List<ProductDto> getAllProducts() {
+		List<Products> productDetails= productRepo.findAll();
+		List<ProductDto> prodDto=utility.toConvertList(productDetails,ProductDto.class);
+		return prodDto;
+	}
+	
+
 }
