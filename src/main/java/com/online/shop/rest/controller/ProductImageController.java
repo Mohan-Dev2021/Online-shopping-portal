@@ -18,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.online.shop.dto.ProductImageDto;
 import com.online.shop.enums.ImageFormate;
+import com.online.shop.error_response.EShopError;
 import com.online.shop.error_response.EShopException;
 import com.online.shop.service.ProductImageService;
+import com.online.shop.utility.EShopConstants;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,25 +42,19 @@ public class ProductImageController {
 				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPG.getImgFormate())
 				|| imageFile.getContentType().equalsIgnoreCase(ImageFormate.JPEG.getImgFormate()))) {
 
-			throw new EShopException(406, "image formate is not accepted ");
+			throw new EShopException(EShopError.IMAGE_FORMAT_INVALID.getErroCode(),
+					EShopError.IMAGE_FORMAT_INVALID.getMessage());
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(productImageService.insertProductImage(id, imageFile));
 	}
 
-//	@GetMapping
-//	public ResponseEntity<byte[]> getProductImageById(@RequestParam String productImageid) {
-//		ProductImage resourceImage = productImageService.getProductImageById(productImageid);
-//		String contentType = "application/octet-stream";
-//		String headerValue = "attachment; filename=\"" + resourceImage.getImageName() + "\"";
-//		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.parseMediaType(contentType))
-//				.header(HttpHeaders.CONTENT_DISPOSITION, headerValue).body(resourceImage.getImage());
-//	}
+
 
 	@GetMapping
 	public ResponseEntity<byte[]> getProductImageById(@RequestParam String productImageid) {
 		ProductImageDto resourceImage = productImageService.getProductImageById(productImageid);
-		String contentType = "application/octet-stream";
-		String headerValue = "attachment; filename=\"" + resourceImage.getImageName() + "\"";
+       String contentType=EShopConstants.FILE_CONTENT_TYPE;
+       String headerValue=EShopConstants.FILE_NAME_TYPE+ resourceImage.getImageName();
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, headerValue).body(resourceImage.getImage());
 	}

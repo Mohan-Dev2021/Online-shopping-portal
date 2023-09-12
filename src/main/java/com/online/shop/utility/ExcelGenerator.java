@@ -1,4 +1,4 @@
-package com.online.shop.excel.file;
+package com.online.shop.utility;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import com.online.shop.dto.ProductDto;
 
@@ -16,11 +17,12 @@ import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class ExcelGenerator {
 
-	private List<ProductDto> productDto;
-	private XSSFWorkbook workbook;
-	private XSSFSheet sheet;
+	public List<ProductDto> productDto;
+	public XSSFWorkbook workbook;
+	public XSSFSheet sheet;
 	
 
 	public ExcelGenerator(List<ProductDto> prodtDto) {
@@ -28,8 +30,8 @@ public class ExcelGenerator {
 		workbook = new XSSFWorkbook();
 	}
 	
-	private void writeHeader() {
-		sheet=workbook.createSheet("Product List");
+	public void writeHeader() {
+		sheet=workbook.createSheet("Products");
 		
 		Row row=sheet.createRow(0);
 		
@@ -39,14 +41,14 @@ public class ExcelGenerator {
 		font.setFontHeight(16);
 		style.setFont(font);
 		
-		createCell(row,0,"id",style);
+		createCell(row,0,"S.NO",style);
 		createCell(row,1,"productName",style);
 		createCell(row,2,"productId",style);
 		createCell(row,3,"quantity",style);
 		createCell(row,4,"price",style);
 	
 	}
-	private void createCell(Row row,int columnCount,Object value,CellStyle style) {
+	public void createCell(Row row,int columnCount,Object value,CellStyle style) {
 		sheet.autoSizeColumn(columnCount);
 		Cell cell=row.createCell(columnCount);
 		if (value instanceof String) {
@@ -55,7 +57,9 @@ public class ExcelGenerator {
 		else if (value instanceof Double) {
 			cell.setCellValue((Double) value);
 		}
-		
+		else if (value instanceof Integer) {
+			cell.setCellValue((Integer) value);
+		}
 		else {
 			cell.setCellValue(String.valueOf((BigDecimal)value) );
 		}
@@ -71,35 +75,19 @@ public class ExcelGenerator {
 	    font.setFontHeight(14);
 	    style.setFont(font);
 	    
-//	    Row row = sheet.createRow(rowCount++);
-//	    int columnCount = 0;
-//	    for(ProductDto productDto : prodtDto) {
-//	    createCell(row, columnCount++, productDto.getId(), style);
-//	    createCell(row, columnCount++, productDto.getProductId(), style);
-//	    createCell(row, columnCount++, productDto.getProductName(), style);
-//	    createCell(row, columnCount++, productDto.getQuantity(), style);
-//	    createCell(row, columnCount++, productDto.getPrice(), style);
-//	}
+
 	    for (int i = 0; i < prodtDto.size(); i++) {
-	        Row row = sheet.createRow(rowCount++);
+	        Row row = sheet.createRow(i+1);
 	        int columnCount = 0;
 	        ProductDto productDto = prodtDto.get(i);
-	        createCell(row, columnCount++, productDto.getId(), style);
-	        createCell(row, columnCount++, productDto.getProductId(), style);
+	        createCell(row, columnCount++, row.getRowNum(), style);
 	        createCell(row, columnCount++, productDto.getProductName(), style);
+	        createCell(row, columnCount++, productDto.getProductId(), style);
 	        createCell(row, columnCount++, productDto.getQuantity(), style);
 	        createCell(row, columnCount++, productDto.getPrice(), style);
 	    }
 	}
-	public void generate(List<ProductDto> prodtDto, HttpServletResponse response)  throws IOException, java.io.IOException {
-		writeHeader();
-		write(prodtDto);
-		ServletOutputStream outputStream = response.getOutputStream();
-		workbook.write(outputStream);
-		workbook.close();
-		outputStream.close();
-		
-	}
+
 
 	
 }

@@ -1,12 +1,16 @@
 package com.online.shop.serviceImpl;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.online.shop.dto.PaginationDtoResponse;
 import com.online.shop.dto.ProductDto;
@@ -18,8 +22,14 @@ import com.online.shop.repository.ProductImageRepo;
 import com.online.shop.repository.ProductRepo;
 import com.online.shop.service.ProductService;
 import com.online.shop.utility.EShopUtility;
+import com.online.shop.utility.ExcelGenerator;
+import com.online.shop.utility.ExcelHelper;
 
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
 
 	private final EShopUtility utility;
 
+	private final ExcelGenerator excelGenerate;
+	
+	 private final GridFsTemplate template;
+
+	  private final GridFsOperations operations;
+	  
 	@Override
 	public ProductDto getProductByProductId(String productId) {
 		Products productDetails = productRepo.findByProductId(productId).orElseThrow(
@@ -123,11 +139,41 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 //	@Override
-	public List<ProductDto> getAllProducts() {
-		List<Products> productDetails= productRepo.findAll();
-		List<ProductDto> prodDto=utility.toConvertList(productDetails,ProductDto.class);
-		return prodDto;
+//	public List<ProductDto> getAllProducts() {
+//		List<Products> productDetails= productRepo.findAll();
+//		List<ProductDto> prodDto=utility.toConvertList(productDetails,ProductDto.class);
+//		return prodDto;
+//	}
+
+	public ByteArrayOutputStream generate(List<ProductDto> prodtDto) throws IOException, java.io.IOException {
+		excelGenerate.writeHeader();
+		excelGenerate.write(prodtDto);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		excelGenerate.workbook.write(outputStream);
+		excelGenerate.workbook.write(outputStream);
+		return outputStream;
 	}
+
+	@Override
+	public ByteArrayOutputStream getAllProducts() throws IOException, Exception {
+		List<Products> productDetails = productRepo.findAll();
+		List<ProductDto> prdDto = utility.toConvertList(productDetails, ProductDto.class);
+		return this.generate(prdDto);
+	}
+
+	@Override
+	public void saveFile(MultipartFile file) throws java.io.IOException {
+		
+		 try {
+	            List<ProductDto> productDtos = ExcelHelper.excelToProducts(file.getInputStream());
+	            List<Products> products = utility.toConvertList(productDtos,Products.class);
+	            List<Products> savedProducts = productRepo.saveAll(products);
+	            List<ProductDto> savedProductDtos = utility.toConvertList(savedProducts, ProductDto.class);
+	        } catch (IOException e) {
+	            throw new RuntimeException("Failed to store Excel data: " + e.getMessage());
+	        }
+	}
+
 	
 
 }

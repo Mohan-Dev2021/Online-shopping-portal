@@ -1,13 +1,10 @@
 package com.online.shop.rest.controller;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
 import org.springframework.context.annotation.Description;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,15 +15,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.online.shop.dto.PaginationDtoResponse;
 import com.online.shop.dto.ProductDto;
-import com.online.shop.excel.file.ExcelGenerator;
+import com.online.shop.error_response.ResponseMessage;
 import com.online.shop.service.ProductService;
+import com.online.shop.utility.EShopConstants;
+import com.online.shop.utility.ExcelHelper;
 
-import io.jsonwebtoken.io.IOException;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +42,7 @@ public class ProductController {
 //	private static final Logger logger = LoggerFactory.class;
 
 	private final ProductService productService;
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDto> getProductById(@PathVariable String id) {
@@ -67,7 +67,6 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(saveProduct));
 	}
 
-
 	@Description(value = "Update products details  depends on productId from existing database")
 	@PutMapping
 	public ResponseEntity<ProductDto> updateProducts(@RequestBody ProductDto productDto) {
@@ -78,27 +77,48 @@ public class ProductController {
 	public ResponseEntity<Boolean> removeProductById(@RequestParam String id) throws NotFoundException {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(productService.removeProductById(id));
 	}
-	
-	
 
+//  @GetMapping("/export/excel")
+//  public ResponseEntity<List<ProductDto>> exportIntoExcel (HttpServletResponse response) throws IOException, java.io.IOException {
+//	  response.setContentType(EShopConstants.FILE_CONTENT_TYPE);
+//		String headerKey = "Content-Disposition";
+//		String headerValue =  EShopConstants.HEADER_VALUE ;  
+//		response.setHeader(headerKey, headerValue);	
+//		
+//		List<ProductDto> getProductsExcel=productService.getAllProducts();
+//		ExcelGenerator generator = new ExcelGenerator(getProductsExcel);
+//		generator.generate(getProductsExcel, response);
+//		return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
+//
 
-  @GetMapping("/export/excel")
-  public ResponseEntity<List<ProductDto>> exportIntoExcel (HttpServletResponse response) throws IOException, java.io.IOException {
-	  response.setContentType("application/octet-stream");
-	  DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-		String currentDateTime = dateFormatter.format(new Date(0));
+	@GetMapping("/import")
+	public ResponseEntity<byte[]> exportIntoExcel() throws Exception {
+		String contentType = EShopConstants.FILE_CONTENT_TYPE;
+		String headerValue = EShopConstants.HEADER_VALUE;
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+				.body(productService.getAllProducts().toByteArray());
+	}
 
-
-		String headerKey = "Content-Disposition";
-		String headerValue = "attachment; filename=records_" + currentDateTime + ".xlsx";
-		response.setHeader(headerKey, headerValue);	
+  	  
+	@PostMapping("/exports")
+	public ResponseEntity<ResponseMessage> uploadFile(@RequestPart MultipartFile file) {
+		String message = "";
+		if (ExcelHelper.hasExcelFormat(file)) {
+			try {
+				productService.saveFile(file);
+				message = "Uploaded the file successfully: " + file.getOriginalFilename();
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+			} catch (Exception e) {
+				message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+			}
+		}else {
+			message = "Please upload an excel file!";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+		}
 		
-		List<ProductDto> getProductsExcel=productService.getAllProducts();
-		ExcelGenerator generator = new ExcelGenerator(getProductsExcel);
-		generator.generate(getProductsExcel, response);
-		return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
-
+	}
+}
 		
-}
-	
-}
+
