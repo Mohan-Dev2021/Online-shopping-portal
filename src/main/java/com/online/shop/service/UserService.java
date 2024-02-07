@@ -7,5 +7,6 @@ public interface UserService {
 
 	public CustomerDto getUserDetailsById(String id);
 	public CustomerDto getUserDetailsByEmailId(String emailId);
+	public CustomerDto updateUserById(String id,CustomerDto customerDto);
 	
 }

@@ -8,6 +8,7 @@ import com.online.shop.dto.AddressDto;
 import com.online.shop.dto.CustomerDto;
 import com.online.shop.dto.ProductDto;
 import com.online.shop.dto.ProductImageDto;
+import com.online.shop.model.Address;
 import com.online.shop.model.Customer;
 import com.online.shop.repository.UserRepo;
 import com.online.shop.service.UserService;
@@ -26,17 +27,13 @@ public class UserServicesImpl implements UserService {
 	@Override
 	public CustomerDto getUserDetailsById(String id) {
 		Customer customer = userRepo.findById(id)
-				.orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+				.orElse(new Customer());
 		CustomerDto customerDto = utility.toConvert(customer, CustomerDto.class);
 		AddressDto addressDto = utility.toConvert(customer.getAddress(), AddressDto.class);
 		customerDto.setAddress(addressDto);
 		return customerDto;
 	}
 
-	
-
-	
-	
 	@Override
 	public CustomerDto getUserDetailsByEmailId(String emailId) {
 		Customer customerEntiry = userRepo.findByEmailId(emailId)
@@ -45,6 +42,18 @@ public class UserServicesImpl implements UserService {
 		AddressDto addressDto = utility.toConvert(customerEntiry.getAddress(), AddressDto.class);
 		customerDto.setAddress(addressDto);
 		return customerDto;
+	}
+
+	@Override
+	public CustomerDto updateUserById(String id, CustomerDto customerDto) {
+		Customer existsCustomer = userRepo.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+		existsCustomer.setFirstName(customerDto.getFirstName());
+		existsCustomer.setLastName(customerDto.getLastName());
+		existsCustomer.setContactNo(customerDto.getContactNo());
+		existsCustomer.setUserName(customerDto.getUserName());
+		userRepo.save(existsCustomer);
+		return utility.toConvert(existsCustomer, CustomerDto.class);
 	}
 
 }
