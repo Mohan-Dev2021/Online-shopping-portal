@@ -69,11 +69,10 @@ public class Customer implements UserDetails {
 	private boolean isActive;
 
 	@Field(name = "registered_at")
-	
 	@CreatedDate
 	private LocalDateTime registeredAt;
 
-	private Address address;
+	private List<Address> addressess;
 
 	private List<Authorities> userAuthorities;
 
