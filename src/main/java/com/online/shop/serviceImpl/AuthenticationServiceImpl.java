@@ -1,5 +1,6 @@
 package com.online.shop.serviceImpl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,15 +59,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			throw new EShopException(406, "The emailId is already exist please try with new emailId");
 		}
 		Customer saveDetail = utility.toConvert(customer, CustomerDto.class);
-		Address address = utility.toConvert(customer.getAddress(), Address.class);
-
-		saveDetail.setAddress(address);
+		saveDetail.setAddressess(List.of());
 		saveDetail.setPassword(passwordEncoder.encode(customer.getPassword()));
 		saveDetail.setUserAuthorities(List.of(new Authorities().setRole(ROLE.USER.getRoleName())));
 		Customer saveDetailValues = userRepository.save(saveDetail);
 		CustomerDto customerDto = utility.toConvert(saveDetailValues, CustomerDto.class);
-		AddressDto addressDto = utility.toConvert(customerDto.getAddress(), AddressDto.class);
-		customerDto.setAddress(addressDto);
+		List<AddressDto> addressDto = utility.toConvertList(customerDto.getAddressess(), AddressDto.class);
+		customerDto.setAddressess(addressDto);
 		return customerDto;
 	}
 

@@ -1,5 +1,7 @@
 package com.online.shop.rest.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.online.shop.dto.AddressDto;
 import com.online.shop.dto.CustomerDto;
 import com.online.shop.service.UserService;
 
@@ -58,8 +61,8 @@ public class UserController {
 	 * @author Mohan SK
 	 */
 	@PutMapping
-	public ResponseEntity<CustomerDto> updateUserById(@RequestParam String id,@RequestBody CustomerDto customerDto) {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(getUserDetails.updateUserById(id,customerDto));
+	public ResponseEntity<CustomerDto> updateUserById(@RequestParam String id, @RequestBody CustomerDto customerDto) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(getUserDetails.updateUserById(id, customerDto));
 
 	}
 

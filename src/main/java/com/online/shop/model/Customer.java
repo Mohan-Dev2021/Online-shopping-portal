@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -69,11 +70,11 @@ public class Customer implements UserDetails {
 	private boolean isActive;
 
 	@Field(name = "registered_at")
-	
 	@CreatedDate
 	private LocalDateTime registeredAt;
 
-	private Address address;
+	@DocumentReference
+	private List<Address> addressess;
 
 	private List<Authorities> userAuthorities;
 

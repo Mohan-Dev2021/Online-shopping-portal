@@ -59,6 +59,7 @@ public class AppSecurityConfig {
 						.requestMatchers("/authentication/management/v1/sign-up").permitAll()
 						.requestMatchers("/product/**").permitAll()
 						.requestMatchers("/user/**").permitAll()
+						.requestMatchers("/account/address/**").permitAll()
 						.requestMatchers("/order/**").permitAll()
 						.requestMatchers("/cart/**").permitAll()
 						.requestMatchers("/payment/**").permitAll()

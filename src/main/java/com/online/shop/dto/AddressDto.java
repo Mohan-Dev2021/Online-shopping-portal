@@ -19,12 +19,20 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @JsonInclude(value = Include.NON_NULL)
 public class AddressDto {
-	
-	
+
+	@Field(name = "id")
+	private String id;
+
+	@Field(name = "customerName")
+	private String customerName;
+
+	@Field(name = "address_type")
+	private Boolean primary;
+
 	@NotBlank(message = "addressLine should  not be blank")
-	@Size(min = 1, max = 50, message = "address should have atleast 1-50 characters")
-	@Field(name = "addressLine")
-	private String addressLine;
+	@Size(min = 1, max = 180, message = "address should have at least 1-180 characters")
+	@Field(name = "address")
+	private String address;
 
 	@NotBlank(message = "city should  not be blank")
 	@Size(min = 1, max = 15, message = "city should have atleast 1-15 characters")
@@ -39,6 +47,9 @@ public class AddressDto {
 	// pin code is not applicable for pattern validation as integer so changed to string
 	@Size(min = 1, max = 6, message = "pincode should have atleast 1-6 characters")
 	private String pincode;
+
+	@Field(name = "delivery_customer_number")
+	private String deliveryCustomerNo;
 
 
 }

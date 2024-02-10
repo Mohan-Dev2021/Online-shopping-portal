@@ -1,14 +1,13 @@
 package com.online.shop.serviceImpl;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.online.shop.dto.AddressDto;
 import com.online.shop.dto.CustomerDto;
-import com.online.shop.dto.ProductDto;
-import com.online.shop.dto.ProductImageDto;
-import com.online.shop.model.Address;
 import com.online.shop.model.Customer;
 import com.online.shop.repository.UserRepo;
 import com.online.shop.service.UserService;
@@ -28,20 +27,14 @@ public class UserServicesImpl implements UserService {
 	public CustomerDto getUserDetailsById(String id) {
 		Customer customer = userRepo.findById(id)
 				.orElse(new Customer());
-		CustomerDto customerDto = utility.toConvert(customer, CustomerDto.class);
-		AddressDto addressDto = utility.toConvert(customer.getAddress(), AddressDto.class);
-		customerDto.setAddress(addressDto);
-		return customerDto;
+        return utility.toConvert(customer, CustomerDto.class);
 	}
 
 	@Override
 	public CustomerDto getUserDetailsByEmailId(String emailId) {
-		Customer customerEntiry = userRepo.findByEmailId(emailId)
+		Customer customerEntity = userRepo.findByEmailId(emailId)
 				.orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
-		CustomerDto customerDto = utility.toConvert(customerEntiry, CustomerDto.class);
-		AddressDto addressDto = utility.toConvert(customerEntiry.getAddress(), AddressDto.class);
-		customerDto.setAddress(addressDto);
-		return customerDto;
+        return utility.toConvert(customerEntity, CustomerDto.class);
 	}
 
 	@Override
@@ -55,5 +48,6 @@ public class UserServicesImpl implements UserService {
 		userRepo.save(existsCustomer);
 		return utility.toConvert(existsCustomer, CustomerDto.class);
 	}
+
 
 }
