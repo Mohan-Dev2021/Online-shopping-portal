@@ -20,27 +20,29 @@ public class AddressController {
 
 
     @PostMapping
-    public ResponseEntity<AddressDto> addAddress(@RequestParam String customerId, @RequestBody AddressDto addressDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(addressService.addAddress(customerId,addressDto));
+    public ResponseEntity<AddressDto> addAddress(@RequestParam String customerId, @RequestBody AddressDto addressDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(addressService.addAddress(customerId, addressDto));
     }
 
     @GetMapping
-    public ResponseEntity<AddressDto> fetchAddressById(@RequestParam String id){
+    public ResponseEntity<AddressDto> fetchAddressById(@RequestParam String id) {
         return ResponseEntity.status(HttpStatus.OK).body(addressService.fetchAddressById(id));
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<List<AddressDto>> fetchAddressByCustomerId(@PathVariable String customerId){
+    public ResponseEntity<List<AddressDto>> fetchAddressByCustomerId(@PathVariable String customerId) {
         return ResponseEntity.status(HttpStatus.OK).body(addressService.fetchAddressByCustomerId(customerId));
     }
 
+
     @DeleteMapping
-    public ResponseEntity<Boolean> removeAddressById(@RequestParam String id){
+    public ResponseEntity<Boolean> removeAddressById(@RequestParam String id) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(addressService.removeAddressById(id));
     }
 
     @PutMapping
-    public ResponseEntity<Boolean> editAddressById(@RequestParam String id,@RequestBody AddressDto addressDto){
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(addressService.editAddressById(id,addressDto));
+    public ResponseEntity<Boolean> editAddressById(@RequestParam String id, @RequestBody AddressDto addressDto) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(addressService.editAddressById(id, addressDto));
     }
+
 }

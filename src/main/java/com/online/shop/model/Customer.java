@@ -23,9 +23,9 @@ import lombok.experimental.Accessors;
 /**
  * Customer - Main user table which has every information of the user whose are
  * all registered and using our application for shopping experience
- * 
- * @category Entity module
+ *
  * @author Mohanlal
+ * @category Entity module
  */
 @Data
 @NoArgsConstructor
@@ -33,84 +33,85 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Customer implements UserDetails {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Id - Primary key
-	 * 
-	 * @category - Random string UUID
-	 */
-	@Id
-	private String id = UUID.randomUUID().toString();
+    /**
+     * Id - Primary key
+     *
+     * @category - Random string UUID
+     */
+    @Id
+    private String id = UUID.randomUUID().toString();
 
-	@Field(name = "first_name")
-	private String firstName;
+    @Field(name = "first_name")
+    private String firstName;
 
-	@Field(name = "last_name")
-	private String lastName;
+    @Field(name = "last_name")
+    private String lastName;
 
-	@Indexed
-	@Field(name = "email_id")
-	private String emailId;
+    @Indexed
+    @Field(name = "email_id")
+    private String emailId;
 
-	@Indexed
-	@Field(name = "user_name")
-	private String userName;
+    @Indexed
+    @Field(name = "user_name")
+    private String userName;
 
-	@Field(name = "password")
-	private String password;
+    @Field(name = "password")
+    private String password;
 
-	@Field(name = "contact_no")
-	private String contactNo;
+    @Field(name = "contact_no")
+    private String contactNo;
 
-	@Field(name = "is_active")
-	private boolean isActive;
+    @Field(name = "is_active")
+    private boolean isActive;
 
-	@Field(name = "registered_at")
-	@CreatedDate
-	private LocalDateTime registeredAt;
+    @Field(name = "registered_at")
+    @CreatedDate
+    private LocalDateTime registeredAt;
 
-	@DocumentReference
-	private List<Address> addressess;
 
-	private List<Authorities> userAuthorities;
+    @DocumentReference
+    private List<Address> addressess;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return userAuthorities.stream().map(user -> new SimpleGrantedAuthority(user.getRole()))
-				.collect(Collectors.toSet());
-	}
+    private List<Authorities> userAuthorities;
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return userAuthorities.stream().map(user -> new SimpleGrantedAuthority(user.getRole()))
+                .collect(Collectors.toSet());
+    }
 
-	@Override
-	public String getUsername() {
-		return userName;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return userName;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return isActive;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return isActive;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

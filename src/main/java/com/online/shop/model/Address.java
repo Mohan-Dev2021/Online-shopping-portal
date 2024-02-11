@@ -29,8 +29,10 @@ public class Address {
 	@Field(name = "address_type")
 	private Boolean primary;
 	
+
 	@Field(name = "address")
 	private String address;
+
 
 	@Field(name = "city")
 	private String city;
